@@ -1,0 +1,26 @@
+name: Terraform auto fmt
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform-auto-fmt:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+      - name: Terraform fmt
+        run: terraform fmt -recursive
+      - uses: stefanzweifel/git-auto-commit-action@v4.2.0
+        with:
+          commit_message: terraform fmt by Github Actions
