@@ -3,7 +3,7 @@ terraform {
   backend "s3" {
     bucket = "masakaya-tfstate"
     key    = "project_name/env/dev/terraform.tfstate"
-    region = "jp-north-1" //石狩第1サイト
+    region = "jp-north-1"
     endpoints = {
       s3 = "https://s3.isk01.sakurastorage.jp"
     }
