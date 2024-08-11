@@ -18,6 +18,7 @@ resource "sakuracloud_server" "web_srv" {
   memory      = 1
   description = "web server"
 
+
   # サーバのNICの接続先の定義。共有セグメント
   # ルータ+スイッチに置き換え予定
   network_interface {
@@ -27,6 +28,7 @@ resource "sakuracloud_server" "web_srv" {
   disk_edit_parameter {
     hostname        = "web1"
     password        = var.password
+    ssh_key_ids     = ["${sakuracloud_ssh_key_gen.main["web"].id}"]
     disable_pw_auth = true
   }
 }

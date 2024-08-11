@@ -19,9 +19,20 @@ variable "s3_endpoint" {
 variable "service" {
   type        = string
   description = "サービス名"
+  default     = "sample"
 }
 
 variable "env" {
   type        = string
   description = "環境名"
+  default     = "dev"
 }
+
+variable "ssh_key" {
+  type = map(string)
+  default = {
+    web = "sshweb"
+    db  = "sshdb"
+  }
+}
+
