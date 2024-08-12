@@ -1,9 +1,10 @@
 data "sakuracloud_archive" "ubuntu" {
-  os_type = "ubuntu2004"
+  # Ubuntu 2024 LTE
+  os_type = "ubuntu"
 }
 
 resource "sakuracloud_disk" "web" {
-  name              = "example1_disk"
+  name              = "web_disk"
   size              = 20
   plan              = "ssd"
   connector         = "virtio"
@@ -24,7 +25,9 @@ resource "sakuracloud_server" "web_srv" {
   network_interface {
     upstream = "shared"
   }
-
+  # USER:ubuntu
+  # Change root : sudo su - 
+  # Password
   disk_edit_parameter {
     hostname        = "web1"
     password        = var.password
