@@ -5,6 +5,10 @@ terraform {
       source  = "sacloud/sakuracloud"
       version = "2.16.2"
     }
+    ansible = {
+      version = "~> 1.3.0"
+      source  = "ansible/ansible"
+    }
   }
 }
 

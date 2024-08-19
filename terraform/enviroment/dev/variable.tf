@@ -27,12 +27,3 @@ variable "env" {
   description = "環境名"
   default     = "dev"
 }
-
-variable "ssh_key" {
-  type = map(string)
-  default = {
-    web = "sshweb"
-    db  = "sshdb"
-  }
-}
-

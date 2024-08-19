@@ -31,7 +31,7 @@ resource "sakuracloud_server" "web_srv" {
   disk_edit_parameter {
     hostname        = "web1"
     password        = var.password
-    ssh_key_ids     = ["${sakuracloud_ssh_key_gen.main["web"].id}"]
+    ssh_key_ids     = ["${sakuracloud_ssh_key_gen.main.id}"]
     disable_pw_auth = true
   }
 }
