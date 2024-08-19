@@ -1,8 +1,25 @@
+variable "domain" {
+  type    = string
+  default = "ppscan.org"
+}
+
 variable "password" {
   default   = "p@ssw0rd"
   type      = string
   sensitive = true
 }
+
+variable "server" {
+  type = map(object({
+    private_ip = string
+  }))
+  default = {
+    "web" = {
+      "private_ip" = "192.168.0.10"
+    }
+  }
+}
+
 
 variable "default_region" {
   type        = string

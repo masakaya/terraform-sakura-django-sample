@@ -23,7 +23,8 @@ resource "sakuracloud_server" "web_srv" {
   # サーバのNICの接続先の定義。共有セグメント
   # ルータ+スイッチに置き換え予定
   network_interface {
-    upstream = "shared"
+    upstream        = "shared"
+    user_ip_address = var.server.web.private_ip
   }
   # USER:ubuntu
   # Change root : sudo su - 
