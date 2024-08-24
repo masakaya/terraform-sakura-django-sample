@@ -1,6 +1,6 @@
 variable "domain" {
   type    = string
-  default = "ppscan.org"
+  default = "dev.ppscan.org"
 }
 
 variable "password" {
@@ -43,4 +43,10 @@ variable "env" {
   type        = string
   description = "環境名"
   default     = "dev"
+}
+
+variable "default_zone" {
+  type        = string
+  description = "デフォルトゾーン"
+  default     = "is1a" // 第一リージョン機能制限が入っているためis1b(石狩第２ゾーンが良い）
 }

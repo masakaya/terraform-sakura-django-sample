@@ -9,6 +9,9 @@ resource "ansible_playbook" "playbook" {
     ansible_become               = true
     ansible_become_pass          = var.password
   }
+  depends_on = [
+    sakuracloud_server.web_srv
+  ]
 }
 
 output "args" {

@@ -4,8 +4,7 @@ resource "sakuracloud_dns" "main" {
 
 resource "sakuracloud_dns_record" "main" {
   dns_id = sakuracloud_dns.main.id
-  name   = "www"
+  name   = "@"
   type   = "A"
-  value  = var.server.web.private_ip
-
+  value  = sakuracloud_server.web_srv.ip_address
 }
