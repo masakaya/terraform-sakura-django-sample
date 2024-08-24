@@ -30,3 +30,32 @@
   1. `cd terraform/environment/dev` で対象のディレクトリに移動します。
   2. `terraform init` で初期化します。
   3. `terraform apply` でリソースを作成します。
+
+## コマンドについて
+
+### usage
+```
+❯ make
+Available targets:
+  run-dev     - Start the development server
+  run-prod    - Start the production server
+```
+
+### dev環境の起動
+
+```
+make run-dev
+```
+
+### prod環境の起動
+プロダクションサーバー起動を実施する。Nginxを使わずに`80`ポートで動作させる。
+`1024`ポートより小さなポートにbindする場合は`authbind`が必要なため、以下の手順でインストールする
+
+※JSファイル、CSSファイル、画像のキャッシュが必要な場合はNginxまたはCDN(GSLB)の利用を検討する。
+
+また、SaaS(不特定多数の人がアクセスする)場合実装時にてJS、CSSのキャッシュ対応を入れないとリリース後のバグとなってしまうため、ローンチが落ち着くまでは静的キャッシュを入れないほうインフラを推奨する。
+
+```
+sudo apt install authbind
+make run-prod
+```
