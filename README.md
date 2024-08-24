@@ -54,8 +54,11 @@ make run-dev
 ※JSファイル、CSSファイル、画像のキャッシュが必要な場合はNginxまたはCDN(GSLB)の利用を検討する。
 
 また、SaaS(不特定多数の人がアクセスする)場合実装時にてJS、CSSのキャッシュ対応を入れないとリリース後のバグとなってしまうため、ローンチが落ち着くまでは静的キャッシュを入れないほうインフラを推奨する。
+```
+# 初回のみ
+sudo apt install authbind
+```
 
 ```
-sudo apt install authbind
 make run-prod
 ```
