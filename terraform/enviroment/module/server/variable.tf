@@ -1,3 +1,15 @@
+variable "service" {
+  type        = string
+  description = "サービス名"
+  default     = "sample"
+}
+
+variable "env" {
+  type        = string
+  description = "環境名"
+  default     = "dev"
+}
+
 variable "zone" {
   type        = string
   default     = "is1b"
@@ -40,10 +52,10 @@ variable "core" {
   description = "server core number(vCPU)"
 }
 
-variable "ram" {
+variable "memory" {
   type        = number
   default     = "1"
-  description = "server core number(GB)"
+  description = "server memory size(GB)"
 }
 
 variable "description" {

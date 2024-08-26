@@ -6,5 +6,5 @@ resource "sakuracloud_dns_record" "main" {
   dns_id = sakuracloud_dns.main.id
   name   = "@"
   type   = "A"
-  value  = sakuracloud_server.web_srv.ip_address
+  value  = module.server["web"].ip_address
 }

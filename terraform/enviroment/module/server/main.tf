@@ -1,5 +1,5 @@
 data "sakuracloud_archive" "ubuntu" {
-  os_type = var.os_type
+  os_type = var.os
 }
 
 resource "sakuracloud_disk" "main" {
@@ -32,7 +32,7 @@ resource "sakuracloud_server" "main" {
   disk_edit_parameter {
     hostname        = var.suffix
     password        = var.password
-    ssh_key_ids     = [var.ssh_key_ids]
-    disable_pw_auth = true
+    ssh_key_ids     = var.ssh_key_ids
+    disable_pw_auth = true //パスワードでのログインを
   }
 }

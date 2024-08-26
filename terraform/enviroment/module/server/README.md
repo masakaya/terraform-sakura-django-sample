@@ -40,5 +40,7 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_ip_address"></a> [ip\_address](#output\_ip\_address) | n/a |
 <!-- END_TF_DOCS -->
