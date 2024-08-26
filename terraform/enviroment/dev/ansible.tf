@@ -1,31 +1,64 @@
-resource "ansible_playbook" "playbook" {
-  playbook   = "./ansible/playbook.yml"
-  name       = module.server["web"].ip_address
-  replayable = true ### terraform applyの度に、Playbookを実行
+# resource "ansible_playbook" "playbook" {
+#   playbook   = "./ansible/playbook.yml"
+#   name       = module.server["web"].ip_address
+#   replayable = true ### terraform applyの度に、Playbookを実行
 
-  extra_vars = {
+#   extra_vars = {
+#     ansible_user                 = "ubuntu"
+#     ansible_ssh_private_key_file = ".ssh/id_rsa_${var.env}"
+#     ansible_become               = true
+#     ansible_become_pass          = var.password
+#   }
+#   depends_on = [
+#     module.server
+#   ]
+# }
+
+# Webサーバーのansible_hostを指定
+resource "ansible_host" "web" {
+  depends_on = [module.server["web"]]
+  name       = "web01"
+  groups     = ["web"]
+  variables = {
     ansible_user                 = "ubuntu"
+    ansible_host                 = module.server["web"].ip_address
     ansible_ssh_private_key_file = ".ssh/id_rsa_${var.env}"
-    ansible_become               = true
+    ansible_python_interpreter   = "/usr/bin/python3"
+    ansible_become               = "yes"
+    ansible_become_method        = "sudo"
     ansible_become_pass          = var.password
   }
-  depends_on = [
-    module.server
-  ]
 }
 
-output "args" {
-  value = ansible_playbook.playbook.args
+# Webサーバーのansible_hostを指定
+resource "ansible_host" "mng" {
+  depends_on = [module.server["mng"]]
+  name       = "mng"
+  groups     = ["mng"]
+  variables = {
+    ansible_user                 = "ubuntu"
+    ansible_host                 = module.server["mng"].ip_address
+    ansible_ssh_private_key_file = ".ssh/id_rsa_${var.env}"
+    ansible_python_interpreter   = "/usr/bin/python3"
+    ansible_become               = "yes"
+    ansible_become_method        = "sudo"
+    ansible_become_pass          = var.password
+  }
 }
 
-output "temp_inventory_file" {
-  value = ansible_playbook.playbook.temp_inventory_file
-}
 
-output "playbook_stderr" {
-  value = ansible_playbook.playbook.ansible_playbook_stderr
-}
+# output "args" {
+#   value = ansible_playbook.playbook.args
+# }
 
-output "playbook_stdout" {
-  value = ansible_playbook.playbook.ansible_playbook_stdout
-}
+# output "temp_inventory_file" {
+#   value = ansible_playbook.playbook.temp_inventory_file
+# }
+
+# output "playbook_stderr" {
+#   value = ansible_playbook.playbook.ansible_playbook_stderr
+# }
+
+# output "playbook_stdout" {
+#   value = ansible_playbook.playbook.ansible_playbook_stdout
+# }

@@ -1,10 +1,27 @@
 ---
-- hosts: all
-  gather_facts: no
-  become: yes
+- name: Deploy monitoring system
+  become: true
+  hosts: mng
+  gather_facts: true
 
   tasks:
-    - name: install git
-      ansible.builtin.apt:
-        name: git
-        state: present
+    # 共通処理
+    - name: Common settings
+      ansible.builtin.import_role:
+        name: common
+
+- name: Deploy web system
+  become: true
+  hosts: web
+  gather_facts: false
+
+  tasks:
+    # 共通処理
+    - name: Common settings
+      ansible.builtin.import_role:
+        name: common
+
+    # Web Serverのセッティング
+    - name: Webserver Setting
+      ansible.builtin.import_role:
+        name: web
