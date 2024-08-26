@@ -1,6 +1,6 @@
 resource "ansible_playbook" "playbook" {
   playbook   = "./ansible/playbook.yml"
-  name       = sakuracloud_server.web_srv.ip_address
+  name       = module.server["web"].ip_address
   replayable = true ### terraform applyの度に、Playbookを実行
 
   extra_vars = {
@@ -10,7 +10,7 @@ resource "ansible_playbook" "playbook" {
     ansible_become_pass          = var.password
   }
   depends_on = [
-    sakuracloud_server.web_srv
+    module.server
   ]
 }
 
