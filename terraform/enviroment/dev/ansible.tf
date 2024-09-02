@@ -1,19 +1,3 @@
-# resource "ansible_playbook" "playbook" {
-#   playbook   = "./ansible/playbook.yml"
-#   name       = module.server["web"].ip_address
-#   replayable = true ### terraform applyの度に、Playbookを実行
-
-#   extra_vars = {
-#     ansible_user                 = "ubuntu"
-#     ansible_ssh_private_key_file = ".ssh/id_rsa_${var.env}"
-#     ansible_become               = true
-#     ansible_become_pass          = var.password
-#   }
-#   depends_on = [
-#     module.server
-#   ]
-# }
-
 # Webサーバーのansible_hostを指定
 resource "ansible_host" "web" {
   depends_on = [module.server["web"]]
