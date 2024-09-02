@@ -29,20 +29,3 @@ resource "ansible_host" "mng" {
     ansible_become_pass          = var.password
   }
 }
-
-
-# output "args" {
-#   value = ansible_playbook.playbook.args
-# }
-
-# output "temp_inventory_file" {
-#   value = ansible_playbook.playbook.temp_inventory_file
-# }
-
-# output "playbook_stderr" {
-#   value = ansible_playbook.playbook.ansible_playbook_stderr
-# }
-
-# output "playbook_stdout" {
-#   value = ansible_playbook.playbook.ansible_playbook_stdout
-# }
