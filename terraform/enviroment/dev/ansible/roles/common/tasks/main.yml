@@ -1,0 +1,10 @@
+---
+## Update all packages to their latest version
+- name: configure / Update apt package
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: set python3 to default
+  shell: update-alternatives --install /usr/bin/python python /usr/bin/python3.12 0

@@ -1,0 +1,12 @@
+---
+- name: install psycopg2
+  shell: pip install psycopg2-binary
+
+- name: install zabbix
+  get_url:
+    https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
+    dest: /tmp
+
+- name: dpkg zabbix repos
+  shell:  dpkg -i /tmp/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
+
