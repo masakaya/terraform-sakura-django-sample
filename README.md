@@ -18,7 +18,10 @@
 
 - ansible-galaxy を使って cloud.terraformを入れる
   ```bash
+  # terraform用
   ansible-galaxy collection install cloud.terraform
+  # zabbix用
+  ansible-galaxy collection install community.zabbix
   ```
 
 ## 実行
