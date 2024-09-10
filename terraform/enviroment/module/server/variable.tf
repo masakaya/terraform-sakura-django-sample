@@ -91,3 +91,8 @@ variable "ssh_key_ids" {
   type        = list(string)
   description = "ssh key ids"
 }
+
+variable "filter_id" {
+  type        = string
+  description = "server of packet filter rules"
+}

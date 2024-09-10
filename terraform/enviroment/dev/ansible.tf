@@ -17,7 +17,7 @@ resource "ansible_host" "web" {
 # Webサーバーのansible_hostを指定
 resource "ansible_host" "mng" {
   depends_on = [module.server["mng"]]
-  name       = "mng"
+  name       = "mng01"
   groups     = ["mng"]
   variables = {
     ansible_user                 = "ubuntu"

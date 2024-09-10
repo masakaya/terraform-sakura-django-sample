@@ -22,8 +22,9 @@ resource "sakuracloud_server" "main" {
 
   # ルータ+スイッチに置き換え予定
   network_interface {
-    upstream        = var.switch_id
-    user_ip_address = var.private_ip
+    upstream         = var.switch_id
+    user_ip_address  = var.private_ip
+    packet_filter_id = var.filter_id
   }
   # USER:ubuntu
   # Change root : sudo su - 

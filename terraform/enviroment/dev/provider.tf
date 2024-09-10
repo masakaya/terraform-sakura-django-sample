@@ -18,3 +18,5 @@ provider "sakuracloud" {
   profile = "default"
   zone    = var.default_zone
 }
+
+provider "http" {}
