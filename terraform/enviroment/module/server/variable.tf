@@ -37,13 +37,24 @@ variable "disk_size" {
 variable "switch_id" {
   type        = string
   default     = ""
-  description = "sakura switch id (unused)"
+  description = "sakura switch id"
 }
 
 variable "private_ip" {
   type        = string
   default     = ""
-  description = "private ip of server (unused)"
+  description = "private ip of server"
+}
+
+variable "gateway" {
+  type        = string
+  description = "gateway of server"
+}
+
+variable "netmask" {
+  type        = number
+  default     = 28
+  description = "router's netmask"
 }
 
 variable "core" {

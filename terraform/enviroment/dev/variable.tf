@@ -36,5 +36,5 @@ variable "env" {
 variable "default_zone" {
   type        = string
   description = "デフォルトゾーン"
-  default     = "is1a" // 第一リージョン機能制限が入っているためis1b(石狩第２ゾーンが良い）
+  default     = "is1b" // 石狩第2ゾーン 
 }
