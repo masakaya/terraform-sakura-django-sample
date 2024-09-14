@@ -3,8 +3,10 @@ locals {
     web = {
       suffix      = "web"
       disk_size   = 20 // 要件に応じて修正
-      switch_id   = "" // 未使用 Route + LB が追加されたら検証する
-      private_ip  = "192.168.0.10"
+      switch_id   = sakuracloud_internet.router.switch_id
+      gateway     = sakuracloud_internet.router.gateway
+      private_ip  = sakuracloud_internet.router.ip_addresses[2]
+      filter_id   = sakuracloud_packet_filter.web.id
       core        = 1 // 要件に応じて修正
       memory      = 1 // 要件に応じて修正
       hostname    = "web"
@@ -13,8 +15,10 @@ locals {
     mng = {
       suffix      = "mng"
       disk_size   = 20 // 要件に応じて修正
-      switch_id   = "" // 未使用 Route + LB が追加されたら検証する
-      private_ip  = "192.168.0.100"
+      switch_id   = sakuracloud_internet.router.switch_id
+      gateway     = sakuracloud_internet.router.gateway
+      private_ip  = sakuracloud_internet.router.ip_addresses[4]
+      filter_id   = sakuracloud_packet_filter.mng.id
       core        = 1 // 要件に応じて修正
       memory      = 1 // 要件に応じて修正
       hostname    = "manage"
