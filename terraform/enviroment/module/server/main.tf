@@ -22,9 +22,9 @@ resource "sakuracloud_server" "main" {
 
   # ルータ+スイッチに置き換え予定
   network_interface {
-    upstream = "shared"
-    #upstream        = sakuracloud_switch.main.id
-    #user_ip_address = var.server.web.private_ip
+    upstream         = var.switch_id
+    user_ip_address  = var.private_ip
+    packet_filter_id = var.filter_id
   }
   # USER:ubuntu
   # Change root : sudo su - 
@@ -33,6 +33,41 @@ resource "sakuracloud_server" "main" {
     hostname        = var.suffix
     password        = var.password
     ssh_key_ids     = var.ssh_key_ids
-    disable_pw_auth = true //パスワードでのログインを
+    disable_pw_auth = true //パスワードでのログインを無効
+    # Setup Network
+    note {
+      id = sakuracloud_note.netplan_setup.id
+    }
   }
+}
+
+resource "sakuracloud_note" "netplan_setup" {
+  name = "netplan-setup-script"
+  tags = ["netplan", "setup"]
+
+  content = <<EOF
+#!/bin/bash
+cat <<EOL > /etc/netplan/01-netcfg.yaml
+network: 
+  version: 2
+  ethernets: 
+    eth0: 
+      dhcp4: 'no'
+      dhcp6: 'no'
+      addresses: 
+        - ${var.private_ip}/${var.netmask}
+      routes: 
+        - to: default
+          via: ${var.gateway}
+      nameservers: 
+        addresses: 
+          - 8.8.8.8
+          - 8.8.4.4
+        search: 
+          - localdomain
+  renderer: networkd
+EOL
+
+sudo netplan apply
+EOF
 }

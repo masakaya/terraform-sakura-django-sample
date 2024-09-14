@@ -1,6 +1,5 @@
 resource "ansible_host" "servers" {
   for_each = local.servers
-
   name   = each.value.hostname
   groups = [each.value.suffix]
   variables = {

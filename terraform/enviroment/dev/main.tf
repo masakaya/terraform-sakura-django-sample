@@ -10,7 +10,9 @@ module "server" {
   suffix      = each.value.suffix
   disk_size   = each.value.disk_size
   switch_id   = each.value.switch_id
+  gateway     = each.value.gateway
   private_ip  = each.value.private_ip
+  filter_id   = each.value.filter_id
   core        = each.value.core
   memory      = each.value.memory
   description = each.value.description
