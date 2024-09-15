@@ -4,12 +4,12 @@ variable "domain" {
 }
 
 variable "subject_alternative_names" {
-  type = list(string)
-  default = [] 
+  type    = list(string)
+  default = []
 }
 
 variable "ssl_reg_email_address" {
-  type = string
+  type    = string
   default = "masashi.kayahara@arc-connects.com"
 }
 
