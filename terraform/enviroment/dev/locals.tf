@@ -9,15 +9,17 @@ locals {
       filter_id   = sakuracloud_packet_filter.web.id
       core        = 1 // 要件に応じて修正
       memory      = 1 // 要件に応じて修正
-      hostname    = "web"
+      hostname    = "web-01"
       description = "Web Server"
     }
 
     db = {
       suffix      = "db"
       disk_size   = 100 // 要件に応じて修正
-      switch_id   = ""  // 未使用 Route + LB が追加されたら検証する
-      private_ip  = "192.168.0.50"
+      switch_id   = sakuracloud_internet.router.switch_id
+      gateway     = sakuracloud_internet.router.gateway
+      private_ip  = sakuracloud_internet.router.ip_addresses[9]
+      filter_id   = sakuracloud_packet_filter.web.id
       core        = 2 // 要件に応じて修正
       memory      = 4 // 要件に応じて修正
       hostname    = "database-01"
@@ -29,7 +31,7 @@ locals {
       disk_size   = 20 // 要件に応じて修正
       switch_id   = sakuracloud_internet.router.switch_id
       gateway     = sakuracloud_internet.router.gateway
-      private_ip  = sakuracloud_internet.router.ip_addresses[4]
+      private_ip  = sakuracloud_internet.router.ip_addresses[10]
       filter_id   = sakuracloud_packet_filter.mng.id
       core        = 1 // 要件に応じて修正
       memory      = 1 // 要件に応じて修正

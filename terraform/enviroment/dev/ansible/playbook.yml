@@ -1,18 +1,9 @@
 ---
-- name: Deploy monitoring system
+- name: Update apt package
   become: true
-  hosts: mng
-  gather_facts: true
-
-  tasks:
-    # 共通処理
-    - name: Common settings
-      ansible.builtin.import_role:
-        name: common
-
-- name: Deploy web system
-  become: true
-  hosts: web
+  hosts: all
+  vars_files:
+    - vars/common.yml
   gather_facts: false
 
   tasks:
@@ -20,8 +11,20 @@
     - name: Common settings
       ansible.builtin.import_role:
         name: common
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 
+- name: Deploy web system
+  become: true
+  vars_files:
+    - vars/common.yml
+  hosts: web
+  gather_facts: false
+
+  tasks:
     # Web Serverのセッティング
     - name: Webserver Setting
       ansible.builtin.import_role:
         name: web
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
