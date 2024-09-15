@@ -14,9 +14,10 @@ terraform {
 
 provider "sakuracloud" {
   # using usacloud profile
-  alias   = "default"
-  profile = "default"
-  zone    = var.default_zone
+  alias = "default"
+  # source envfile
+  #profile = "default" 
+  zone = var.default_zone
 }
 
 provider "http" {}
