@@ -1,6 +1,16 @@
 variable "domain" {
   type    = string
-  default = "dev.ppscan.org"
+  default = "ppscan.org"
+}
+
+variable "subject_alternative_names" {
+  type = list(string)
+  default = [] 
+}
+
+variable "ssl_reg_email_address" {
+  type = string
+  default = "masashi.kayahara@arc-connects.com"
 }
 
 variable "password" {
