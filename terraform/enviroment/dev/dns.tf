@@ -14,5 +14,5 @@ resource "sakuracloud_dns_record" "proxylb" {
   name   = "www"
   type   = "CNAME"
   value  = "${sakuracloud_proxylb.main.fqdn}."
-  ttl    = 10 
+  ttl    = 10
 }
