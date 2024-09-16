@@ -19,6 +19,6 @@ output "certificate_pem" {
 }
 
 output "issuer_pem" {
-  value       = acme_certificate.cert.certificate_pem
+  value       = acme_certificate.cert.issuer_pem
   description = "The intermediate certificate in PEM format."
 }

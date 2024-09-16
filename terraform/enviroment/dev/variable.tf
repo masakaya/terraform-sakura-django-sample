@@ -43,6 +43,12 @@ variable "env" {
   default     = "dev"
 }
 
+variable "lb_region" {
+  type        = string
+  description = "デフォルトリージョン"
+  default     = "is1" // 石狩リージョン
+}
+
 variable "default_zone" {
   type        = string
   description = "デフォルトゾーン"
