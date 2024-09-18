@@ -70,8 +70,8 @@ variable "memory" {
 }
 
 variable "tags" {
-  type       = list(string)
-  default    = []
+  type        = list(string)
+  default     = []
   description = "タグ（サーバーグループとしても利用する）"
 }
 

@@ -10,5 +10,5 @@ terraform {
 
 provider "sakuracloud" {
   alias = "default"
-  zone = var.default_zone
+  zone  = var.default_zone
 }
