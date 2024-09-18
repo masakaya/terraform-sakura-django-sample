@@ -69,6 +69,12 @@ variable "memory" {
   description = "server memory size(GB)"
 }
 
+variable "tags" {
+  type       = list(string)
+  default    = []
+  description = "タグ（サーバーグループとしても利用する）"
+}
+
 variable "description" {
   type        = string
   default     = ""

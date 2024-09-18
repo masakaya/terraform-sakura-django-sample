@@ -22,12 +22,12 @@ module "server" {
 }
 
 # SSL証明書を発行します。
-module "acme" {
-  providers = {
-    sakuracloud = sakuracloud.default
-  }
-  source                    = "../module/acme"
-  common_name               = var.domain
-  subject_alternative_names = var.subject_alternative_names
-  email_address             = var.ssl_reg_email_address
-}
+# module "acme" {
+#   providers = {
+#     sakuracloud = sakuracloud.default
+#   }
+#   source                    = "../module/acme"
+#   common_name               = "${var.domain}"
+#   subject_alternative_names = var.subject_alternative_names
+#   email_address             = var.ssl_reg_email_address
+# }
