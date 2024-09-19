@@ -447,3 +447,5 @@ terraform.rc
 
 envfile
 .ssh/
+
+vault-password.txt

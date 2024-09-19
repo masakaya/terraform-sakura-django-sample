@@ -1,0 +1,10 @@
+---
+- name: Setup postgresql
+  become: true
+  become_method: sudo
+  ansible.builtin.apt:
+    name: postgresql-16,postgresql-contrib
+    state: present
+
+- name: Set password for the default PostgreSQL user
+  command: sudo -u {{ postgres_user }} psql -c "ALTER USER postgres WITH PASSWORD '{{ postgres_password }}';"
