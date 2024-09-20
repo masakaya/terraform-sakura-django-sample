@@ -33,6 +33,7 @@
   become: true
   vars_files:
     - vars/common.yml
+    - roles/db/vars/postgresql.yml
     - roles/db/vars/root.yml
   hosts: db
   gather_facts: false

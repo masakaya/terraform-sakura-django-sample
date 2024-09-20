@@ -8,3 +8,8 @@
 
 - name: set python3 to default
   shell: update-alternatives --install /usr/bin/python python /usr/bin/python3.12 0
+
+- name: install psycopg2
+  ansible.builtin.apt:
+    name: python3-psycopg2
+    state: present
