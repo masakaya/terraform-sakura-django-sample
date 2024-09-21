@@ -1,0 +1,20 @@
+---
+- name: Setup postgresql
+  become: true
+  become_method: sudo
+  ansible.builtin.apt:
+    name: postgresql-{{ postgresql_version }},postgresql-contrib
+    state: present
+
+- name: Set password for the default PostgreSQL user
+  command: sudo -u {{ postgres_user }} psql -c "ALTER USER postgres WITH PASSWORD '{{ postgres_password }}';"
+
+- name: Copy new pg_hba.conf for all users
+  copy:
+    src: ./files/pg_hba.conf
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: '0600'
+  notify: Restart PostgreSQL # See ./handlers/main.yml
+

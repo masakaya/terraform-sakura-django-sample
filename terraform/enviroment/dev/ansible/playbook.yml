@@ -28,3 +28,18 @@
         name: web
   vars:
     ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+
+- name: Setting database server
+  become: true
+  vars_files:
+    - vars/common.yml
+    - roles/db/vars/postgresql.yml
+    - roles/db/vars/root.yml
+  hosts: db
+  gather_facts: false
+  tasks:
+    - name: Webserver Setting
+      ansible.builtin.import_role:
+        name: db
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
