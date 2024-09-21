@@ -22,12 +22,34 @@ module "server" {
 }
 
 # SSL証明書を発行します。
-# module "acme" {
-#   providers = {
-#     sakuracloud = sakuracloud.default
-#   }
-#   source                    = "../module/acme"
-#   common_name               = "${var.domain}"
-#   subject_alternative_names = var.subject_alternative_names
-#   email_address             = var.ssl_reg_email_address
-# }
+module "acme" {
+  providers = {
+    sakuracloud = sakuracloud.default
+  }
+  source                    = "../module/acme"
+  common_name               = "*.${var.domain}"
+  subject_alternative_names = var.subject_alternative_names
+  email_address             = var.ssl_reg_email_address
+}
+
+resource "local_file" "server_cert" {
+  content  = module.acme.certificate_pem
+  filename = "./cert/${var.domain}.server.crt"
+  file_permission = "0644" 
+
+  #   server_cert       = module.acme.certificate_pem
+  #   private_key       = module.acme.private_key_pem
+  #   intermediate_cert = module.acme.issuer_pem
+}
+
+resource "local_file" "private_key_cert" {
+  content  = module.acme.private_key_pem
+  filename = "./cert/${var.domain}.key"
+  file_permission = "0644" # Ansibleで配置時に600へ
+}
+
+resource "local_file" "intermediate_cert" {
+  content  = module.acme.issuer_pem
+  filename = "./cert/${var.domain}.intermediate.crt"
+  file_permission = "0644"
+}
