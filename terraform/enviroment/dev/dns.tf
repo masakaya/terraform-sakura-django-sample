@@ -1,5 +1,7 @@
-resource "sakuracloud_dns" "main" {
-  zone = var.domain
+data "sakuracloud_dns" "main" {
+  filter {
+    names = [var.domain]
+  }
 }
 
 # resource "sakuracloud_dns_record" "main" {
@@ -9,8 +11,16 @@ resource "sakuracloud_dns" "main" {
 #   value  = module.server["web"].ip_address
 # }
 
+# resource "sakuracloud_dns_record" "acme" {
+#    dns_id = data.sakuracloud_dns.main.id
+#    name   = "_acme-challenge.www.${var.domain}"
+#    type   = "NS"
+#    value  = "acme.example.jp."
+# }
+
+
 resource "sakuracloud_dns_record" "proxylb" {
-  dns_id = sakuracloud_dns.main.id
+  dns_id = data.sakuracloud_dns.main.id
   name   = "www"
   type   = "CNAME"
   value  = "${sakuracloud_proxylb.main.fqdn}."

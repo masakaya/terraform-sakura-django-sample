@@ -65,3 +65,14 @@ sudo apt install authbind
 ```
 make run-prod
 ```
+
+### ansibleの実行と設定
+
+## クレデンシャルな情報の暗号化
+
+```bash
+# varsファイルの暗号化
+ansible-vault encrypt ./ansible/roles/db/vars/root.yml --vault-pass-file ./ansible/vault-password.txt
+# varsファイルを復号してplaybookを実行
+ansible-playbook -i  inventory.yml ./ansible/playbook.yml --vault-pass-file ./ansible/vault-password.txt
+```

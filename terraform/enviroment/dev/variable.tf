@@ -54,3 +54,10 @@ variable "default_zone" {
   description = "デフォルトゾーン"
   default     = "is1b" // 石狩第2ゾーン 
 }
+
+variable "api_key_id" {
+  type        = string
+  description = "オートスケール"
+  default     = "113601543605" // APIキーの払い出しによって可変なため、tfval化を行うこと
+
+}

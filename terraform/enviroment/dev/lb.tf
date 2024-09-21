@@ -39,25 +39,25 @@ resource "sakuracloud_proxylb" "main" {
     group      = "group1"
   }
 
-  #   certificate {
+  # certificate {
   #  #   common_name       = var.domain
-  #     server_cert       = module.acme.certificate_pem
-  #     private_key       = module.acme.private_key_pem
-  #     intermediate_cert = module.acme.issuer_pem
-  #   }
+  #   server_cert       = module.acme.certificate_pem
+  #   private_key       = module.acme.private_key_pem
+  #   intermediate_cert = module.acme.issuer_pem
+  # }
 
 }
 
-resource "sakuracloud_proxylb_acme" "main" {
-  proxylb_id = sakuracloud_proxylb.main.id
-  accept_tos = true
-  #common_name      = sakuracloud_proxylb.main.vip
-  common_name       = "www.${var.domain}"
-  subject_alt_names = var.subject_alternative_names
+# resource "sakuracloud_proxylb_acme" "main" {
+#   proxylb_id = sakuracloud_proxylb.main.id
+#   accept_tos = true
+#   #common_name      = sakuracloud_proxylb.main.vip
+#   common_name       = "www.${var.domain}"
+#   subject_alt_names = var.subject_alternative_names
 
-  update_delay_sec = 120
-  #get_certificates_timeout_sec = 120 
+#   update_delay_sec = 120
+#   #get_certificates_timeout_sec = 120 
 
-}
+# }
 
 
