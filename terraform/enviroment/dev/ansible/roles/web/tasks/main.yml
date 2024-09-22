@@ -1,5 +1,32 @@
 ---
 - name: Install package
   ansible.builtin.apt:
-    name: git
+    name: 
+    - git
+    - nginx
+    - certbot
     state: present
+
+- name: create directories for ssl certificates
+  file: 
+    path: /etc/nginx/ssl
+    state: directory
+
+# - name: Display paths of all .txt files in dir
+#   debug: msg={{ lookup('fileglob', '{{ playbook_dir }}/files/*.crt') }}
+
+- name: Copy ssl certificates file
+  copy: 
+    src : "{{ item }}"
+    dest: /etc/nginx/ssl
+    mode: "0644"
+  with_fileglob:
+    - "{{ playbook_dir }}/files/*.crt"
+
+- name: Copy key file
+  copy: 
+    src : "{{ item }}"
+    dest: /etc/nginx/ssl
+    mode: "0600"
+  with_fileglob:
+    - "{{ playbook_dir }}/files/*.key"

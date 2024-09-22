@@ -59,7 +59,12 @@ variable "api_key_id" {
   type        = string
   description = "オートスケール"
   default     = "113601543605" // APIキーの払い出しによって可変なため、tfval化を行うこと
+}
 
+variable "ansible_dir" {
+  type        = string
+  description = "ansible実行パス" 
+  default = "./ansible" 
 }
 
 variable "ansible_dir" {
