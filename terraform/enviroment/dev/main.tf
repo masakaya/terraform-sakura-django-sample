@@ -33,9 +33,9 @@ module "acme" {
 }
 
 resource "local_file" "server_cert" {
-  content  = module.acme.certificate_pem
-  filename = "${var.ansible_dir}/files/${var.domain}.server.crt"
-  file_permission = "0644" 
+  content         = module.acme.certificate_pem
+  filename        = "${var.ansible_dir}/files/${var.domain}.server.crt"
+  file_permission = "0644"
 }
 
 resource "local_file" "private_key_cert" {
