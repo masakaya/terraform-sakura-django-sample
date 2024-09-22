@@ -39,23 +39,13 @@ resource "local_file" "server_cert" {
 }
 
 resource "local_file" "private_key_cert" {
-<<<<<<< HEAD
   content         = module.acme.private_key_pem
   filename        = "${var.ansible_dir}/files/${var.domain}.key"
-=======
-  content  = module.acme.private_key_pem
-  filename = "${var.ansible_dir}/files/${var.domain}.key"
->>>>>>> 15d9cb2 (Copy certificates file)
   file_permission = "0644" # Ansibleで配置時に600へ
 }
 
 resource "local_file" "intermediate_cert" {
-<<<<<<< HEAD
   content         = module.acme.issuer_pem
   filename        = "${var.ansible_dir}/files/${var.domain}.intermediate.crt"
-=======
-  content  = module.acme.issuer_pem
-  filename = "${var.ansible_dir}/files/${var.domain}.intermediate.crt"
->>>>>>> 15d9cb2 (Copy certificates file)
   file_permission = "0644"
 }
