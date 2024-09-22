@@ -63,8 +63,8 @@ variable "api_key_id" {
 
 variable "ansible_dir" {
   type        = string
-  description = "ansible実行パス" 
-  default = "./ansible" 
+  description = "ansible実行パス"
+  default     = "./ansible"
 }
 
 variable "ansible_dir" {
