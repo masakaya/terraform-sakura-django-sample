@@ -61,3 +61,9 @@ variable "api_key_id" {
   default     = "113601543605" // APIキーの払い出しによって可変なため、tfval化を行うこと
 
 }
+
+variable "ansible_dir" {
+  type        = string
+  description = "ansible directory"
+  default     = "./ansible"
+}
