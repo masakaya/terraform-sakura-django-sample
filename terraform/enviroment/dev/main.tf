@@ -20,32 +20,3 @@ module "server" {
   password    = var.password
   ssh_key_ids = ["${sakuracloud_ssh_key_gen.main.id}"]
 }
-
-# SSL証明書を発行します。
-module "acme" {
-  providers = {
-    sakuracloud = sakuracloud.default
-  }
-  source                    = "../module/acme"
-  common_name               = "*.${var.domain}"
-  subject_alternative_names = var.subject_alternative_names
-  email_address             = var.ssl_reg_email_address
-}
-
-resource "local_file" "server_cert" {
-  content         = module.acme.certificate_pem
-  filename        = "${var.ansible_dir}/files/${var.domain}.server.crt"
-  file_permission = "0644"
-}
-
-resource "local_file" "private_key_cert" {
-  content         = module.acme.private_key_pem
-  filename        = "${var.ansible_dir}/files/${var.domain}.key"
-  file_permission = "0644" # Ansibleで配置時に600へ
-}
-
-resource "local_file" "intermediate_cert" {
-  content         = module.acme.issuer_pem
-  filename        = "${var.ansible_dir}/files/${var.domain}.intermediate.crt"
-  file_permission = "0644"
-}

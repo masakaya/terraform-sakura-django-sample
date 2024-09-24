@@ -5,6 +5,7 @@
     - git
     - nginx
     - certbot
+    - python3-certbot-dns-sakuracloud
     state: present
 
 - name: create directories for ssl certificates
@@ -12,21 +13,43 @@
     path: /etc/nginx/ssl
     state: directory
 
-# - name: Display paths of all .txt files in dir
-#   debug: msg={{ lookup('fileglob', '{{ playbook_dir }}/files/*.crt') }}
+- name: create sakura cloud secrets.
+  copy:
+    dest: ~/.sakura
+    content: |
+      dns_sakuracloud_api_token = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN') }}"
+      dns_sakuracloud_api_secret = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN_SECRET') }}"
+    mode: '0600'
 
-- name: Copy ssl certificates file
-  copy: 
-    src : "{{ item }}"
-    dest: /etc/nginx/ssl
-    mode: "0644"
-  with_fileglob:
-    - "{{ playbook_dir }}/files/*.crt"
+- name: check file exists
+  ansible.builtin.stat:
+    path: "/etc/letsencrypt/live/{{ domain }}"
+  register: ssl_data
 
-- name: Copy key file
-  copy: 
-    src : "{{ item }}"
-    dest: /etc/nginx/ssl
-    mode: "0600"
-  with_fileglob:
-    - "{{ playbook_dir }}/files/*.key"
+- name: certbot certonly
+  expect:
+    command: >
+      certbot certonly
+      --dns-sakuracloud
+      --dns-sakuracloud-credentials /root/.sakura
+      --dns-sakuracloud-propagation-seconds 90
+      -d *.{{ domain }}
+      -d {{ domain }}
+      -m {{ email }}}
+      --agree-tos
+    responses:
+      '(Y)es/(N)o:': 'Y'
+  register: certbot_output 
+  when: not ssl_data.stat.exists
+
+  # NginxをSSL化する
+- name: deply nginx_ssl.conf
+  template:
+    src: ./files/nginx.ssl.conf.j2
+    dest: /etc/nginx/conf.d/nginx.ssl.conf
+
+- name: Enable certbot timer
+  systemd:
+    name: certbot.timer
+    enabled: true
+    state: started
