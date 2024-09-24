@@ -26,6 +26,12 @@ resource "sakuracloud_server" "main" {
     user_ip_address  = var.private_ip
     packet_filter_id = var.filter_id
   }
+
+  network_interface {
+    upstream         = var.local_sw_id
+    user_ip_address  = var.local_private_ip
+  }
+
   # USER:ubuntu
   # Change root : sudo su - 
   # Password
@@ -65,6 +71,21 @@ network:
           - 8.8.4.4
         search: 
           - localdomain
+    eth1: 
+      dhcp4: 'no'
+      dhcp6: 'no'
+      addresses: 
+        - ${var.local_private_ip}/${var.local_netmask}
+      routes: 
+        - to: default
+          via: ${var.local_gateway}
+      nameservers: 
+        addresses: 
+          - 8.8.8.8
+          - 8.8.4.4
+        search: 
+          - localdomain
+      
   renderer: networkd
 EOL
 

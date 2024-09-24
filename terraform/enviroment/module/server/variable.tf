@@ -102,3 +102,25 @@ variable "filter_id" {
   type        = string
   description = "server of packet filter rules"
 }
+
+variable "local_sw_id" {
+  type       =  string
+  description = "server of packet filter rules"
+}
+
+variable "local_private_ip" {
+  type        = string
+  default     = ""
+  description = "private ip of server"
+}
+
+variable "local_gateway" {
+  type        = string
+  description = "local gateway address"
+}
+
+variable "local_netmask" {
+  type        = number
+  default     = 24
+  description = "local switch's netmask"
+}

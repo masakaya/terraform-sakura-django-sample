@@ -28,10 +28,10 @@ resource "sakuracloud_proxylb" "main" {
 
 
   # syslog
-  syslog {
-    server = module.server["mng"].ip_address
-    port   = 514
-  }
+  # syslog {
+  #   server = module.server["mng"].ip_address
+  #   port   = 514
+  # }
 
   server {
     ip_address = module.server["web"].ip_address
