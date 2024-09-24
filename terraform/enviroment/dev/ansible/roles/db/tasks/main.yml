@@ -6,9 +6,6 @@
     name: postgresql-{{ postgresql_version }},postgresql-contrib
     state: present
 
-- name: Set password for the default PostgreSQL user
-  command: sudo -u {{ postgres_user }} psql -c "ALTER USER postgres WITH PASSWORD '{{ postgres_password }}';"
-
 - name: Copy new pg_hba.conf for all users
   copy:
     src: ./files/pg_hba.conf
@@ -18,3 +15,5 @@
     mode: '0600'
   notify: Restart PostgreSQL # See ./handlers/main.yml
 
+#- name: Set password for the default PostgreSQL user
+#  command: sudo -u {{ postgres_user }} psql -c "ALTER USER postgres WITH PASSWORD '{{ postgres_password }}';"
