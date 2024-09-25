@@ -25,7 +25,7 @@ resource "sakuracloud_packet_filter_rules" "web" {
     destination_port = "8080"
     description      = "web application port"
   }
-  
+
   expression {
     protocol         = "tcp"
     destination_port = "2049"
