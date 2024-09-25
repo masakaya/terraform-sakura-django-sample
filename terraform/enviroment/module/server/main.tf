@@ -29,7 +29,7 @@ resource "sakuracloud_server" "main" {
 
   network_interface {
     upstream         = var.local_sw_id
-    user_ip_address  = var.local_private_ip
+    packet_filter_id = var.filter_id
   }
 
   # USER:ubuntu
@@ -63,7 +63,7 @@ network:
       addresses: 
         - ${var.private_ip}/${var.netmask}
       routes: 
-        - to: default
+        - to: 0.0.0.0/0
           via: ${var.gateway}
       nameservers: 
         addresses: 
@@ -77,15 +77,9 @@ network:
       addresses: 
         - ${var.local_private_ip}/${var.local_netmask}
       routes: 
-        - to: default
+        - to: 192.168.0.0/${var.local_netmask}
           via: ${var.local_gateway}
-      nameservers: 
-        addresses: 
-          - 8.8.8.8
-          - 8.8.4.4
-        search: 
-          - localdomain
-      
+
   renderer: networkd
 EOL
 

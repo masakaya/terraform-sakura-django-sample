@@ -19,7 +19,8 @@ module "server" {
   hostname    = each.value.hostname
   password    = var.password
   ssh_key_ids = ["${sakuracloud_ssh_key_gen.main.id}"]
-  local_sw_id = each.value.local_sw_id
-  local_private_ip = each.value.local_ip
-  local_gateway = each.value.local_gateway
+  local_sw_id = sakuracloud_switch.nfs.id
+  local_private_ip = each.value.local_private_ip
+  local_netmask = local.nfs.netmask
+  local_gateway = local.nfs.gateway
 }

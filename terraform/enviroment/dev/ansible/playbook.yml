@@ -18,6 +18,7 @@
   become: true
   vars_files:
     - vars/ssl.yml
+    - vars/nfs.yml
     - vars/common.yml
   hosts: web
   gather_facts: false

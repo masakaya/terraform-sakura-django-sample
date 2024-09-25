@@ -3,7 +3,10 @@
   become: true
   become_method: sudo
   ansible.builtin.apt:
-    name: postgresql-{{ postgresql_version }},postgresql-contrib
+    name: 
+    - postgresql-{{ postgresql_version }}
+    - postgresql-contrib
+    - nfs-common
     state: present
 
 - name: Copy new pg_hba.conf for all users

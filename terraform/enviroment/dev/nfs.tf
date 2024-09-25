@@ -1,14 +1,14 @@
 resource "sakuracloud_nfs" "main" {
     name  = "${var.service}-${var.env}-nfs"
 
-    plan = "ssd"
-    size = "100"
+    plan = local.nfs.plan
+    size = local.nfs.size
 
     network_interface {
         switch_id = sakuracloud_switch.nfs.id
-        ip_address = "192.168.0.101"
-        netmask = 24
-        gateway = "192.168.0.1"
+        ip_address = local.nfs.ip_address
+        netmask = local.nfs.netmask
+        gateway = local.nfs.gateway
     }
     description = "Sakura Cloud NFS"
 }
