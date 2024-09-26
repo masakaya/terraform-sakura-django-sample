@@ -37,12 +37,15 @@
     - vars/common.yml
     - roles/db/vars/postgresql.yml
     - roles/db/vars/root.yml
+    - roles/db/vars/user.yml
   hosts: db
   gather_facts: false
   tasks:
     - name: Database Setting
       ansible.builtin.import_role:
         name: db
+  tags:
+  - "db"
   vars:
     ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 

@@ -18,5 +18,18 @@
     mode: '0600'
   notify: Restart PostgreSQL # See ./handlers/main.yml
 
-#- name: Set password for the default PostgreSQL user
-#  command: sudo -u {{ postgres_user }} psql -c "ALTER USER postgres WITH PASSWORD '{{ postgres_password }}';"
+- name: Change postgres password
+  user:
+    name: "{{ postgres_user }}"
+    password: "{{ postgres_password | password_hash('sha256')}}"
+
+- name: Create database user
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    db: "{{ item.db }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    port: "{{ postgresql_port }}"
+    encrypted: yes
+    state: present
+  with_items: "{{ postgresql_users }}"
