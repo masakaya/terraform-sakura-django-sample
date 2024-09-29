@@ -7,6 +7,7 @@
     - postgresql-{{ postgresql_version }}
     - postgresql-contrib
     - nfs-common
+    - libpq-dev
     state: present
 
 - name: Copy new pg_hba.conf for all users
@@ -23,12 +24,20 @@
     name: "{{ postgres_user }}"
     password: "{{ postgres_password | password_hash('sha256')}}"
 
+- name: Create zabbix database
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: zabbix
+    port: "{{ postgresql_port }}"
+    state: present
+
 - name: Create database user
   become_user: postgres
   community.postgresql.postgresql_user:
     db: "{{ item.db }}"
     name: "{{ item.name }}"
     password: "{{ item.password }}"
+    role_attr_flags: NOSUPERUSER,NOCREATEDB,NOCREATEROLE
     port: "{{ postgresql_port }}"
     encrypted: yes
     state: present
