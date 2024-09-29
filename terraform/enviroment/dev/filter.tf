@@ -196,3 +196,40 @@ resource "sakuracloud_packet_filter_rules" "mng" {
     description = "Deny ALL"
   }
 }
+
+
+# プライベートネットワーク用のパケットフィルタリング
+resource "sakuracloud_packet_filter" "private" {
+  name        = "${var.service}-${var.env}-localhost-filter"
+  description = "packet filter for localhost"
+}
+
+resource "sakuracloud_packet_filter_rules" "private" {
+  packet_filter_id = sakuracloud_packet_filter.private.id
+
+  expression {
+    protocol         = "tcp"
+    source_network   = "192.168.0.0/24"
+  }
+
+  # Management server用ポート
+  expression {
+    protocol         = "tcp"
+    source_network   = "192.168.0.0/24"
+  }
+
+  expression {
+    protocol = "icmp"
+  }
+
+  # フラグメントはすべて許可する
+  expression {
+    protocol = "fragment"
+  }
+
+  expression {
+    protocol    = "ip"
+    allow       = false
+    description = "Deny ALL"
+  }
+}

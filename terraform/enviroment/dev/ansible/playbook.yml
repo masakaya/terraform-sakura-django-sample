@@ -35,7 +35,6 @@
   become: true
   vars_files:
     - vars/common.yml
-    - vars/nfs.yml
     - roles/db/vars/postgresql.yml
     - roles/db/vars/root.yml
     - roles/db/vars/user.yml

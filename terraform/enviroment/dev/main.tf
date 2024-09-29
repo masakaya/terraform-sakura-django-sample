@@ -23,4 +23,5 @@ module "server" {
   local_private_ip = each.value.local_private_ip
   local_netmask    = local.nfs.netmask
   local_gateway    = local.nfs.gateway
+  private_filter_id = sakuracloud_packet_filter.private.id
 }

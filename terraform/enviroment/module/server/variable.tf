@@ -123,3 +123,8 @@ variable "local_netmask" {
   default     = 24
   description = "private ip of local netmask"
 }
+
+variable "private_filter_id" {
+  type        = string
+  description = "server of packet filter rules"
+}

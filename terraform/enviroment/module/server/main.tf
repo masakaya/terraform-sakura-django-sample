@@ -29,7 +29,7 @@ resource "sakuracloud_server" "main" {
 
   network_interface {
     upstream         = var.local_sw_id
-    packet_filter_id = var.filter_id
+    packet_filter_id = var.private_filter_id
   }
 
   # USER:ubuntu
