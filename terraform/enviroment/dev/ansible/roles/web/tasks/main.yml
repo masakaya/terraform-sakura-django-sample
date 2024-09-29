@@ -6,12 +6,9 @@
     - nginx
     - certbot
     - python3-certbot-dns-sakuracloud
+    - nfs-common
     state: present
 
-- name: create directories for ssl certificates
-  file: 
-    path: /etc/nginx/ssl
-    state: directory
 
 - name: create sakura cloud secrets.
   copy:
@@ -53,3 +50,13 @@
     name: certbot.timer
     enabled: true
     state: started
+
+- name: Mount up sakura cloud nfs
+  ansible.posix.mount:
+    src: "{{ nfs_src }}"
+    path: /data
+    fstype: nfs
+    opts: defaults
+    dump: 0    #バックアップしない
+    passno: 0  # fsck無効 
+    state: mounted
