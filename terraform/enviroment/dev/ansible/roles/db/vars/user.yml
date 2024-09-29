@@ -1,0 +1,6 @@
+---
+postgresql_users:
+  - db: "zabbix"
+    name: "zabbix"
+    password: "password1" # あとでvaultで暗号化する
+    port: 5432
