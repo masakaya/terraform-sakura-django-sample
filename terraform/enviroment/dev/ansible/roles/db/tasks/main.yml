@@ -35,6 +35,7 @@
     state: present
   notify: Restart PostgreSQL
 
+# デバッグ用後で削除する
 - name: Update pg_hba(debug)
   community.postgresql.postgresql_pg_hba:
     dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf

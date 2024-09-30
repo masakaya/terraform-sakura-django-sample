@@ -53,6 +53,7 @@
   become: true
   vars_files:
     - roles/db/vars/postgresql.yml
+    - roles/mng/vars/configuration.yml
     - vars/common.yml
   hosts: mng 
   gather_facts: false

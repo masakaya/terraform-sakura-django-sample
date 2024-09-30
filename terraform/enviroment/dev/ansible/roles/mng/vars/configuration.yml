@@ -1,0 +1,20 @@
+---
+# Zabbix
+zabbix_conf_path: /etc/zabbix/zabbix_server.conf
+
+zabbix_nginx_conf_path: /etc/zabbix/nginx.conf
+
+zabbix_server_config:
+  db_name: "zabbix"
+  db_host: "192.168.0.20"
+  db_port: "5432"
+  db_user: "zabbix"
+  db_password: "password1"
+  db_schema: "zabbix"
+
+zabbix_service_list:
+- zabbix-server
+- zabbix-agent
+- nginx
+- php8.3-fpm
+

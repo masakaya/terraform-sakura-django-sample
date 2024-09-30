@@ -1,0 +1,15 @@
+---
+# Nginxデフォルトのsite-availableを削除する
+# (zabbix.confと内容が冗長。site-availableが後勝ちとなってしまうため)
+- name: disabled site-enabled
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: deply nginx.conf
+  template:
+    src: ./files/nginx.conf.j2
+    dest: "{{ zabbix_nginx_conf_path }}"
+    backup: true
+  notify: Restart Zabbix
+
