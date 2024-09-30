@@ -49,5 +49,18 @@ locals {
       description      = "Management server"
       local_private_ip = "192.168.0.30"
     }
+    prome = {
+      suffix           = "prome"
+      disk_size        = 20 // 要件に応じて修正
+      switch_id        = sakuracloud_internet.router.switch_id
+      gateway          = sakuracloud_internet.router.gateway
+      private_ip       = sakuracloud_internet.router.ip_addresses[8]
+      filter_id        = sakuracloud_packet_filter.mng.id
+      core             = 2 // 要件に応じて修正
+      memory           = 4 // 要件に応じて修正
+      hostname         = "prome-01"
+      description      = "Prometheus server"
+      local_private_ip = "192.168.0.40"
+    }
   }
 }

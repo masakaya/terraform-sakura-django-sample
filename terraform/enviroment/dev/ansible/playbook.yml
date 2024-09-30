@@ -65,3 +65,14 @@
   - "mng"
   vars:
     ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+
+- name: Setup management system(Prometheus/Grafana/Node Exporter)
+  become: true
+  vars_files:
+    - vars/common.yml
+  tasks:
+    - name: Deploy Node Exporter
+      ansible.builtin.import_role:
+
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"

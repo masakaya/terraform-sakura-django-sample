@@ -1,0 +1,54 @@
+---
+- name: Common Task
+  hosts: prome
+  become: true
+  tasks:
+    - ansible.builtin.import_role: 
+        name: common
+      tags: common
+
+  vars_files:
+    - vars/common.yml
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+
+
+
+- name: Deploy Node Exporter for the monitoring system
+  hosts: prome
+  become: true
+  vars_files:
+    - vars/common.yml
+  tasks:
+    - ansible.builtin.import_role: 
+        name: nodeexporter
+      tags: nodeexporter
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+  tags: prome
+
+- name: Deploy Prometheus for the monitoring system
+  hosts: prome
+  become: true
+  vars_files:
+    - vars/common.yml
+  tasks:
+    - ansible.builtin.import_role:
+        name: prometheus
+      tags: prometheus
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+  tags: prome
+
+- name: Deploy Grafana for the monitoring system
+  hosts: prome
+  become: true
+  vars_files:
+    - vars/common.yml
+  tasks:
+    - ansible.builtin.import_role:
+        name: grafana
+      tags: grafana
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+  tags: prome
