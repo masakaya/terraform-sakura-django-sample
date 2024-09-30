@@ -52,6 +52,7 @@
 - name: Setup management server
   become: true
   vars_files:
+    - roles/db/vars/postgresql.yml
     - vars/common.yml
   hosts: mng 
   gather_facts: false

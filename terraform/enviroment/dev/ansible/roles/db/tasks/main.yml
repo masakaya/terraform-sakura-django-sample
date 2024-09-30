@@ -10,16 +10,42 @@
     - libpq-dev
     state: present
 
-- name: Copy new pg_hba.conf for all users
-  copy:
-    src: ./files/pg_hba.conf
-    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
-    owner: postgres
-    group: postgres
-    mode: '0600'
-  notify: Restart PostgreSQL # See ./handlers/main.yml
+# - name: Copy new pg_hba.conf for all users
+#   copy:
+#     src: ./files/pg_hba.conf
+#     dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+#     owner: postgres
+#     group: postgres
+#     mode: '0600'
+#   notify: Restart PostgreSQL # See ./handlers/main.yml
 
-- name: Change postgres password
+- name: Configure PostgreSQL. Set listen_addresses.
+  lineinfile: 
+    dest=/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    regexp="listen_addresses =" line="listen_addresses = '*'"
+    state=present
+  notify: Restart PostgreSQL
+
+- name: Update pg_hba
+  community.postgresql.postgresql_pg_hba:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    contype: host
+    source: 192.168.0.0/24
+    method: md5
+    state: present
+  notify: Restart PostgreSQL
+
+- name: Update pg_hba(debug)
+  community.postgresql.postgresql_pg_hba:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    contype: host
+    source: 106.172.6.226/32
+    method: md5
+    state: present
+  notify: Restart PostgreSQL
+
+
+- name: Change postgres root password
   user:
     name: "{{ postgres_user }}"
     password: "{{ postgres_password | password_hash('sha256')}}"
@@ -41,4 +67,25 @@
     port: "{{ postgresql_port }}"
     encrypted: yes
     state: present
+  with_items: "{{ postgresql_users }}"
+
+# ユーザ毎にスキーマを作成する
+- name: Create zabbix schema
+  become_user: postgres
+  community.postgresql.postgresql_schema:
+    name: "{{ item.default_schema }}"
+    database: "{{ item.db }}"
+    owner: "{{ item.name }}"
+    port: "{{ postgresql_port }}"
+    state: present
+  with_items: "{{ postgresql_users }}"
+
+# デフォルトスキーマ変更
+- name: Set default search_path
+  become_user: postgres
+  community.postgresql.postgresql_query:
+    db: postgres
+    port: "{{ postgresql_port }}"
+    query: |
+      ALTER USER {{ item.name }} SET search_path TO {{ item.default_schema }}, public;
   with_items: "{{ postgresql_users }}"

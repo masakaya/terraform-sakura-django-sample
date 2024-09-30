@@ -27,5 +27,17 @@
     - zabbix-nginx-conf
     - zabbix-sql-scripts
     - zabbix-agent
+    - postgresql-client
     - postgresql-client-common
     state: present
+
+# 初期化用DBを登録
+- name: Setup initialize database
+  community.postgresql.postgresql_db:
+    name: "zabbix"
+    login_host: "192.168.0.20"
+    login_password: "password1"
+    login_user: "zabbix"
+    port: "{{ postgresql_port }}"
+    state: "restore"
+    target: "/usr/share/zabbix-sql-scripts/postgresql/server.sql.gz"
