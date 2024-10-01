@@ -8,8 +8,8 @@ resource "sakuracloud_proxylb" "main" {
   region         = var.lb_region
 
   health_check {
-    protocol    = "tcp"
-    delay_loop  = 10
+    protocol   = "tcp"
+    delay_loop = 10
   }
 
   bind_port {
