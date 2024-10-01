@@ -1,0 +1,14 @@
+---
+- name: download / Download Node Exporter file
+  ansible.builtin.unarchive:
+    src: https://github.com/prometheus/node_exporter/releases/download/v{{ nodeexporter_version }}/node_exporter-{{ nodeexporter_version }}.linux-amd64.tar.gz
+    dest: /usr/local/src
+    owner: "{{ nodeexporter_os_user }}"
+    group: "{{ nodeexporter_os_group }}"
+    remote_src: true
+
+- name: configure / Create node_exporter symbolic link
+  ansible.builtin.file:
+    src: /usr/local/src/node_exporter-{{ nodeexporter_version }}.linux-amd64/node_exporter
+    dest: /usr/local/node_exporter
+    state: link

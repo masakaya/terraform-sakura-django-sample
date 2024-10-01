@@ -1,0 +1,10 @@
+---
+- name: configure / Add Node Exporter group
+  ansible.builtin.group:
+    name: "{{ nodeexporter_os_group }}"
+    state: present
+
+- name: configure / Add Node Exporter user
+  ansible.builtin.user:
+    name: "{{ nodeexporter_os_user }}"
+    groups: "{{ nodeexporter_os_group }}"

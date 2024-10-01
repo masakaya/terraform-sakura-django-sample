@@ -1,0 +1,11 @@
+---
+- name: configure / Add Prometheus group
+  ansible.builtin.group:
+    name: "{{ prometheus_os_group }}"
+    state: present
+
+- name: configure / Add Prometheus user
+  ansible.builtin.user:
+    name: "{{ prometheus_os_user }}"
+    groups: "{{ prometheus_os_group }}"
+

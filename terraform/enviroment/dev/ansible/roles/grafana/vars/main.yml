@@ -1,0 +1,12 @@
+---
+grafana_version: 11.2.1
+grafana_port: 3000
+grafana_user: admin
+grafana_password: admin
+grafana_server: 192.168.0.40
+
+prometheus_port: 9090
+prometheus_server: 192.168.0.40
+nodeexporter_port: 9100
+nodeexporter_server: 192.168.0.40
+
