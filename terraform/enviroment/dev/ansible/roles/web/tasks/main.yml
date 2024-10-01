@@ -5,6 +5,7 @@
     - git
     - nginx
     - certbot
+    - zabbix-agent
     - python3-certbot-dns-sakuracloud
     state: present
 
@@ -16,44 +17,3 @@
 
 - name: Setup ssl certificate
   ansible.builtin.include_tasks: nginx.yml
-
-# - name: create sakura cloud secrets.
-#   copy:
-#     dest: ~/.sakura
-#     content: |
-#       dns_sakuracloud_api_token = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN') }}"
-#       dns_sakuracloud_api_secret = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN_SECRET') }}"
-#     mode: '0600'
-
-# - name: check file exists
-#   ansible.builtin.stat:
-#     path: "/etc/letsencrypt/live/{{ domain }}"
-#   register: ssl_data
-
-# - name: certbot certonly
-#   expect:
-#     command: >
-#       certbot certonly
-#       --dns-sakuracloud
-#       --dns-sakuracloud-credentials /root/.sakura
-#       --dns-sakuracloud-propagation-seconds 90
-#       -d *.{{ domain }}
-#       -d {{ domain }}
-#       -m {{ email }}}
-#       --agree-tos
-#     responses:
-#       '(Y)es/(N)o:': 'Y'
-#   register: certbot_output 
-#   when: not ssl_data.stat.exists
-
-#   # NginxをSSL化する
-# - name: deply nginx_ssl.conf
-#   template:
-#     src: ./files/nginx.ssl.conf.j2
-#     dest: /etc/nginx/conf.d/nginx.ssl.conf
-
-# - name: Enable certbot timer
-#   systemd:
-#     name: certbot.timer
-#     enabled: true
-#     state: started

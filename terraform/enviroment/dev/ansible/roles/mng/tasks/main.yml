@@ -2,18 +2,6 @@
 - name: Setup NFS
   ansible.builtin.include_tasks: nfs.yml
 
-- name: Download repository
-  ansible.builtin.get_url: 
-    url : https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
-    dest: /tmp
-
-- name: dpkg zabbix repos
-  shell:  dpkg -i /tmp/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
-
-- name: Update apt repository
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600  # 1時間有効なキャッシュを使用
 
 - name: Install zabbix package
   ansible.builtin.apt:
