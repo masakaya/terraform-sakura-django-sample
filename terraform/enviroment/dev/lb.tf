@@ -8,11 +8,8 @@ resource "sakuracloud_proxylb" "main" {
   region         = var.lb_region
 
   health_check {
-    protocol    = "http"
+    protocol    = "tcp"
     delay_loop  = 10
-    host_header = var.domain
-    path        = "/"
-    port        = 8080
   }
 
   bind_port {
@@ -35,7 +32,7 @@ resource "sakuracloud_proxylb" "main" {
 
   server {
     ip_address = module.server["web"].ip_address
-    port       = 8080
+    port       = 443
     group      = "group1"
   }
 

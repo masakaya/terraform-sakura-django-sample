@@ -28,6 +28,8 @@
     - name: Webserver Setting
       ansible.builtin.import_role:
         name: web
+  tags: 
+  - "web"
   vars:
     ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 
@@ -52,9 +54,10 @@
 - name: Setup management server
   become: true
   vars_files:
+    - vars/nfs.yml
+    - vars/common.yml
     - roles/db/vars/postgresql.yml
     - roles/mng/vars/configuration.yml
-    - vars/common.yml
   hosts: mng 
   gather_facts: false
   tasks:

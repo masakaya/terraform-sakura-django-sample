@@ -1,0 +1,6 @@
+server {
+  listen 443 ssl;
+
+  ssl_certificate     /data/letsencrypt/{{ domain }}/fullchain.pem;
+  ssl_certificate_key /data/letsencrypt/{{ domain }}/privkey.pem;
+}

@@ -22,22 +22,8 @@ resource "sakuracloud_packet_filter_rules" "web" {
   # Web application用ポート
   expression {
     protocol         = "tcp"
-    destination_port = "8080"
+    destination_port = "443"
     description      = "web application port"
-  }
-
-  expression {
-    protocol         = "tcp"
-    destination_port = "2049"
-    source_network   = "192.168.0.0/24"
-    description      = "nfs port"
-  }
-
-  expression {
-    protocol         = "udp"
-    destination_port = "2049"
-    source_network   = "192.168.0.0/24"
-    description      = "nfs port"
   }
 
   expression {
@@ -155,20 +141,6 @@ resource "sakuracloud_packet_filter_rules" "mng" {
     protocol         = "tcp"
     destination_port = "443"
     description      = "web application port"
-  }
-
-  expression {
-    protocol         = "tcp"
-    destination_port = "2049"
-    source_network   = "192.168.0.0/24"
-    description      = "nfs port"
-  }
-
-  expression {
-    protocol         = "udp"
-    destination_port = "2049"
-    source_network   = "192.168.0.0/24"
-    description      = "nfs port"
   }
 
   expression {

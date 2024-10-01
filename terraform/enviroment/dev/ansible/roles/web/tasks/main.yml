@@ -6,57 +6,54 @@
     - nginx
     - certbot
     - python3-certbot-dns-sakuracloud
-    - nfs-common
     state: present
 
+- name: Setup NFS
+  ansible.builtin.include_tasks: nfs.yml
 
-- name: create sakura cloud secrets.
-  copy:
-    dest: ~/.sakura
-    content: |
-      dns_sakuracloud_api_token = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN') }}"
-      dns_sakuracloud_api_secret = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN_SECRET') }}"
-    mode: '0600'
+- name: Setup ssl certificate
+  ansible.builtin.include_tasks: ssl.yml
 
-- name: check file exists
-  ansible.builtin.stat:
-    path: "/etc/letsencrypt/live/{{ domain }}"
-  register: ssl_data
+- name: Setup ssl certificate
+  ansible.builtin.include_tasks: nginx.yml
 
-- name: certbot certonly
-  expect:
-    command: >
-      certbot certonly
-      --dns-sakuracloud
-      --dns-sakuracloud-credentials /root/.sakura
-      --dns-sakuracloud-propagation-seconds 90
-      -d *.{{ domain }}
-      -d {{ domain }}
-      -m {{ email }}}
-      --agree-tos
-    responses:
-      '(Y)es/(N)o:': 'Y'
-  register: certbot_output 
-  when: not ssl_data.stat.exists
+# - name: create sakura cloud secrets.
+#   copy:
+#     dest: ~/.sakura
+#     content: |
+#       dns_sakuracloud_api_token = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN') }}"
+#       dns_sakuracloud_api_secret = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN_SECRET') }}"
+#     mode: '0600'
 
-  # NginxをSSL化する
-- name: deply nginx_ssl.conf
-  template:
-    src: ./files/nginx.ssl.conf.j2
-    dest: /etc/nginx/conf.d/nginx.ssl.conf
+# - name: check file exists
+#   ansible.builtin.stat:
+#     path: "/etc/letsencrypt/live/{{ domain }}"
+#   register: ssl_data
 
-- name: Enable certbot timer
-  systemd:
-    name: certbot.timer
-    enabled: true
-    state: started
+# - name: certbot certonly
+#   expect:
+#     command: >
+#       certbot certonly
+#       --dns-sakuracloud
+#       --dns-sakuracloud-credentials /root/.sakura
+#       --dns-sakuracloud-propagation-seconds 90
+#       -d *.{{ domain }}
+#       -d {{ domain }}
+#       -m {{ email }}}
+#       --agree-tos
+#     responses:
+#       '(Y)es/(N)o:': 'Y'
+#   register: certbot_output 
+#   when: not ssl_data.stat.exists
 
-- name: Mount up sakura cloud nfs
-  ansible.posix.mount:
-    src: "{{ nfs_src }}"
-    path: /data
-    fstype: nfs
-    opts: defaults
-    dump: 0    #バックアップしない
-    passno: 0  # fsck無効 
-    state: mounted
+#   # NginxをSSL化する
+# - name: deply nginx_ssl.conf
+#   template:
+#     src: ./files/nginx.ssl.conf.j2
+#     dest: /etc/nginx/conf.d/nginx.ssl.conf
+
+# - name: Enable certbot timer
+#   systemd:
+#     name: certbot.timer
+#     enabled: true
+#     state: started

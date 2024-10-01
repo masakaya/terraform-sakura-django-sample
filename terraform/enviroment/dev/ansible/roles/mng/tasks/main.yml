@@ -1,9 +1,6 @@
 ---
-- name: Install package
-  ansible.builtin.apt:
-    name: 
-    - nfs-common
-    state: present
+- name: Setup NFS
+  ansible.builtin.include_tasks: nfs.yml
 
 - name: Download repository
   ansible.builtin.get_url: 

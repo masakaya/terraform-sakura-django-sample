@@ -1,0 +1,5 @@
+---
+- name: deply nginx_ssl.conf
+  template:
+    src: ./templates/nginx.ssl.conf.j2
+    dest: /etc/nginx/conf.d/nginx.ssl.conf

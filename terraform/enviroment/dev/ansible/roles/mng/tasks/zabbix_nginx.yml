@@ -8,8 +8,23 @@
 
 - name: deply nginx.conf
   template:
-    src: ./files/nginx.conf.j2
+    src: ./templates/nginx.conf.j2
     dest: "{{ zabbix_nginx_conf_path }}"
     backup: true
-  notify: Restart Zabbix
 
+- name: Allow user to run commands without password
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    line: "ubuntu ALL=(ALL) NOPASSWD: ALL"
+    validate: '/usr/sbin/visudo -cf %s'  # 設定の検証
+
+- name: Add a cron reload nginx
+  ansible.builtin.cron:
+    name: "Update SSL "  # ジョブの説明
+    minute: "0"          # 分
+    hour: "*"            # 時
+    day: "*"             # 日
+    month: "*"           # 月
+    weekday: "*"         # 曜日
+    user: "ubuntu"       # 実行するユーザー
+    job: "systemctl reload nginx.service"  # 実行するコマンド

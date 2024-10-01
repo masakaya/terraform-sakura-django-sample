@@ -1,7 +1,6 @@
 ---
 # Zabbix
 zabbix_conf_path: /etc/zabbix/zabbix_server.conf
-
 zabbix_nginx_conf_path: /etc/zabbix/nginx.conf
 
 zabbix_server_config:
@@ -18,3 +17,5 @@ zabbix_service_list:
 - nginx
 - php8.3-fpm
 
+# ssl
+nginx_ssh_conf_path: /etc/nginx/conf.d/nginx.ssl.conf

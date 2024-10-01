@@ -1,0 +1,64 @@
+---
+- name: create sakura cloud secrets.
+  copy:
+    dest: ~/.sakura
+    content: |
+      dns_sakuracloud_api_token = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN') }}"
+      dns_sakuracloud_api_secret = "{{ lookup('env', 'SAKURACLOUD_ACCESS_TOKEN_SECRET') }}"
+    mode: '0600'
+
+- name: check file exists
+  ansible.builtin.stat:
+    path: "/etc/letsencrypt/live/{{ domain }}"
+  register: ssl_data
+
+- name: certbot certonly
+  expect:
+    command: >
+      certbot certonly
+      --dns-sakuracloud
+      --dns-sakuracloud-credentials /root/.sakura
+      --dns-sakuracloud-propagation-seconds 90
+      -d *.{{ domain }}
+      -d {{ domain }}
+      -m {{ email }}}
+      --agree-tos
+    responses:
+      '(Y)es/(N)o:': 'Y'
+  register: certbot_output 
+  when: not ssl_data.stat.exists
+
+- name: Copy certbot service 
+  template:
+    src: ./templates/certbot.service.j2
+    dest: /lib/systemd/system/certbot.service
+
+- name: Enable certbot timer
+  systemd:
+    name: certbot.timer
+    enabled: true
+    state: started
+
+- name: check directory exists
+  ansible.builtin.stat:
+    path: "/data/letsencrypt/{{ domain }}"
+  register: nfs_ssl_data
+
+- name: Create directory for cert and key
+  ansible.builtin.file:
+    path: "/data/letsencrypt/{{ domain }}"
+    state: "directory"
+    mode: '0755'
+  when: not nfs_ssl_data.stat.exists
+
+- name: Create a symbolic link / fullchain
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/etc/letsencrypt/live/{{ domain }}/fullchain.pem"
+    dest: "/data/letsencrypt/{{ domain }}/fullchain.pem"
+ 
+- name: Create a symbolic link / privkey.pem
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/etc/letsencrypt/live/{{ domain }}/privkey.pem"
+    dest: "/data/letsencrypt/{{ domain }}/privkey.pem"
