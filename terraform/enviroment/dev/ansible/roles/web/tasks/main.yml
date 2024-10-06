@@ -3,17 +3,8 @@
   ansible.builtin.apt:
     name: 
     - git
-    - nginx
-    - certbot
     - zabbix-agent
-    - python3-certbot-dns-sakuracloud
     state: present
 
 - name: Setup NFS
   ansible.builtin.include_tasks: nfs.yml
-
-- name: Setup ssl certificate
-  ansible.builtin.include_tasks: ssl.yml
-
-- name: Setup ssl certificate
-  ansible.builtin.include_tasks: nginx.yml
