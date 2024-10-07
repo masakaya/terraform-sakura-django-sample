@@ -1,0 +1,7 @@
+---
+- name : Restart Zabbix
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop: "{{ zabbix_service_list }}"

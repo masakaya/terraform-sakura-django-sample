@@ -1,0 +1,37 @@
+server {
+        listen              80 proxy_protocol;
+        server_name _;
+        
+        set_real_ip_from    {{ lb_networks }};
+        real_ip_header proxy_protocol;
+        
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+        location = /favicon.ico {
+                log_not_found   off;
+        }
+
+        location /assets {
+                access_log      off;
+                expires         10d;
+        }
+
+        location ~ /\.ht {
+                deny            all;
+        }
+
+        location ~ /(api\/|conf[^\.]|include|locale) {
+                deny            all;
+                return          404;
+        }
+
+        location /vendor {
+                deny            all;
+                return          404;
+        }
+}

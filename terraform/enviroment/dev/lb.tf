@@ -8,11 +8,8 @@ resource "sakuracloud_proxylb" "main" {
   region         = var.lb_region
 
   health_check {
-    protocol    = "http"
-    delay_loop  = 10
-    host_header = var.domain
-    path        = "/"
-    port        = 8080
+    protocol   = "tcp"
+    delay_loop = 10
   }
 
   bind_port {
@@ -26,25 +23,41 @@ resource "sakuracloud_proxylb" "main" {
     port       = 443
   }
 
-
   # syslog
   # syslog {
   #   server = module.server["mng"].ip_address
   #   port   = 514
   # }
 
+  # Webサーバー 
   server {
     ip_address = module.server["web"].ip_address
-    port       = 8080
+    port       = 80
     group      = "group1"
   }
+  rule {
+    host  = "www.${var.domain}"
+    path  = "/"
+    group = "group1"
+  }
 
-  # certificate {
-  #  #   common_name       = var.domain
-  #   server_cert       = module.acme.certificate_pem
-  #   private_key       = module.acme.private_key_pem
-  #   intermediate_cert = module.acme.issuer_pem
-  # }
+  # 管理サーバー
+  server {
+    ip_address = module.server["mng"].ip_address
+    port       = 80
+    group      = "group2"
+  }
+  rule {
+    host  = "mng.${var.domain}"
+    path  = "/"
+    group = "group2"
+  }
+
+  certificate {
+    server_cert       = module.acme.certificate_pem
+    private_key       = module.acme.private_key_pem
+    intermediate_cert = module.acme.issuer_pem
+  }
 
 }
 

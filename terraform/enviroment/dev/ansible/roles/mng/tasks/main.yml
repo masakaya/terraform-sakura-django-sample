@@ -1,22 +1,7 @@
 ---
-- name: Install package
-  ansible.builtin.apt:
-    name: 
-    - nfs-common
-    state: present
+- name: Setup NFS
+  ansible.builtin.include_tasks: nfs.yml
 
-- name: Download repository
-  ansible.builtin.get_url: 
-    url : https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
-    dest: /tmp
-
-- name: dpkg zabbix repos
-  shell:  dpkg -i /tmp/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
-
-- name: Update apt repository
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600  # 1時間有効なキャッシュを使用
 
 - name: Install zabbix package
   ansible.builtin.apt:
@@ -27,5 +12,18 @@
     - zabbix-nginx-conf
     - zabbix-sql-scripts
     - zabbix-agent
+    - postgresql-client
     - postgresql-client-common
+    - language-pack-ja-base
+    - language-pack-ja
+    - ibus-mozc
     state: present
+
+- name: Setup Zabbix database
+  ansible.builtin.include_tasks: zabbix_database.yml
+
+- name: Setup Zabbix server 
+  ansible.builtin.include_tasks: zabbix_server.yml
+
+- name: Setup Nginx config
+  ansible.builtin.include_tasks: zabbix_nginx.yml

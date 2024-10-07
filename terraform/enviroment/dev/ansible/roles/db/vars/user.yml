@@ -4,3 +4,4 @@ postgresql_users:
     name: "zabbix"
     password: "password1" # あとでvaultで暗号化する
     port: 5432
+    default_schema: "zabbix"

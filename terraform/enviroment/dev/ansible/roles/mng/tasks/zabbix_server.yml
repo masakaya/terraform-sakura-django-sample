@@ -1,0 +1,53 @@
+---
+- name: Setup Zabbix Server(Database host)
+  ansible.builtin.lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: "^DBHost=localhost"
+    line: "DBHost={{ zabbix_server_config.db_host }}"
+    backup: true
+    state: present
+
+- name: Setup Zabbix Server(Database schema)
+  ansible.builtin.lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: "^DBSchema="
+    line: "DBSchema={{ zabbix_server_config.db_schema }}"
+    backup: true
+    state: present
+
+- name: Setup Zabbix Server(Database name)
+  ansible.builtin.lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: "^DBName="
+    line: "DBName={{ zabbix_server_config.db_name }}"
+    backup: true
+    state: present
+
+- name: Setup Zabbix Server(Database user)
+  ansible.builtin.lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: "^DBUser="
+    line: "DBUser={{ zabbix_server_config.db_user }}"
+    backup: true
+    state: present
+
+- name: Setup Zabbix Server(Database password)
+  ansible.builtin.lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: "^DBPassword="
+    line: "DBPassword={{ zabbix_server_config.db_password }}"
+    backup: true
+    state: present
+
+- name: Setup Zabbix Server(Database port)
+  ansible.builtin.lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: "^DBPort="
+    line: "DBPort={{ zabbix_server_config.db_port }}"
+    backup: true
+    state: present
+    
+- name: Load locate generate
+  ansible.builtin.shell: locale-gen
+  args:
+    executable: /bin/bash

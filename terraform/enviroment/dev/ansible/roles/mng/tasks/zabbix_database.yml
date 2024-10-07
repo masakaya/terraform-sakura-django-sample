@@ -1,0 +1,11 @@
+---
+# 初期化用DBを登録
+- name: Setup initialize database
+  community.postgresql.postgresql_db:
+    name: "{{ zabbix_server_config.db_name }}"
+    login_host: "{{ zabbix_server_config.db_host  }}"
+    login_password: "{{ zabbix_server_config.db_password }}"
+    login_user: "{{ zabbix_server_config.db_user }}"
+    port: "{{ zabbix_server_config.db_port }}"
+    state: "restore"
+    target: "/usr/share/zabbix-sql-scripts/postgresql/server.sql.gz"

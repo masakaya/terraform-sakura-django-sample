@@ -1,11 +1,6 @@
 ---
-- name: Install package
-  ansible.builtin.apt:
-    name: 
-    - git
-    - zabbix-agent
-    state: present
-
+# Nginxデフォルトのsite-availableを削除する
+# (zabbix.confと内容が冗長。site-availableが後勝ちとなってしまうため)
 - name: disabled site-enabled
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
@@ -14,8 +9,5 @@
 - name: deply nginx.conf
   template:
     src: ./templates/nginx.conf.j2
-    dest: /etc/nginx/conf.d/default.conf
+    dest: "{{ zabbix_nginx_conf_path }}"
     backup: true
-
-- name: Setup NFS
-  ansible.builtin.include_tasks: nfs.yml

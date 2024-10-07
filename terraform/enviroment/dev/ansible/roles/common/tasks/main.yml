@@ -1,10 +1,20 @@
 ---
+## Add zabbix repository
+- name: configure / Download Zabbix repository
+  ansible.builtin.get_url: 
+    url : https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
+    dest: /tmp
+
+- name: configure / dpkg zabbix repos
+  shell:  dpkg -i /tmp/zabbix-release_7.0-2%2Bubuntu24.04_all.deb
+
 ## Update all packages to their latest version
-- name: configure / Update apt package
+- name: configure / Update apt repository
   ansible.builtin.apt:
     name: "*"
     state: latest
-    update_cache: yes
+    update_cache: true
+    cache_valid_time: 3600  # 1時間有効なキャッシュを使用
 
 - name: set python3 to default
   shell: update-alternatives --install /usr/bin/python python /usr/bin/python3.12 0

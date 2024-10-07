@@ -1,0 +1,20 @@
+---
+- name: Install package
+  ansible.builtin.apt:
+    name: 
+    - nfs-common
+    state: present
+
+- name: Mount up sakura cloud nfs
+  ansible.posix.mount:
+    src: "{{ nfs_src }}"
+    path: "{{ mount_point }}"
+    fstype: nfs
+    opts: defaults
+    dump: 0    #バックアップしない
+    passno: 0  # fsck無効 
+    state: present # mountedの場合、ハングするためfstabのみ更新
+
+- name: Reboot the remote machine
+  ansible.builtin.reboot:
+    reboot_timeout: 600
