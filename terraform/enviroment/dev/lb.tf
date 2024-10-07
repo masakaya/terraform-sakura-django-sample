@@ -36,9 +36,9 @@ resource "sakuracloud_proxylb" "main" {
     group      = "group1"
   }
   rule {
-    host       = "www.${var.domain}"
-    path       = "/"
-    group      = "group1"
+    host  = "www.${var.domain}"
+    path  = "/"
+    group = "group1"
   }
 
   # 管理サーバー
@@ -48,9 +48,9 @@ resource "sakuracloud_proxylb" "main" {
     group      = "group2"
   }
   rule {
-    host       = "mng.${var.domain}"
-    path       = "/"
-    group      = "group2"
+    host  = "mng.${var.domain}"
+    path  = "/"
+    group = "group2"
   }
 
   certificate {

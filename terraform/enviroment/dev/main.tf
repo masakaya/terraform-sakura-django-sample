@@ -31,7 +31,7 @@ module "acme" {
   providers = {
     sakuracloud = sakuracloud.default
   }
-  source = "git::https://github.com/masakaya/terraform-acme-module.git//sakura?ref=v0.2.0"
+  source                    = "git::https://github.com/masakaya/terraform-acme-module.git//sakura?ref=v0.2.0"
   common_name               = "*.${var.domain}"
   subject_alternative_names = var.subject_alternative_names
   email_address             = var.ssl_reg_email_address
