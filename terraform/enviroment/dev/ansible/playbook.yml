@@ -20,6 +20,7 @@
     - vars/ssl.yml
     - vars/nfs.yml
     - vars/common.yml
+    - vars/lb.yml
   hosts: web
   gather_facts: false
 
@@ -56,6 +57,7 @@
   vars_files:
     - vars/nfs.yml
     - vars/common.yml
+    - vars/lb.yml
     - roles/db/vars/postgresql.yml
     - roles/mng/vars/configuration.yml
   hosts: mng 

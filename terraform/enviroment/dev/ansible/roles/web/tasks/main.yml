@@ -6,5 +6,16 @@
     - zabbix-agent
     state: present
 
+- name: disabled site-enabled
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: deply nginx.conf
+  template:
+    src: ./templates/nginx.conf.j2
+    dest: /etc/nginx/conf.d/default.conf
+    backup: true
+
 - name: Setup NFS
   ansible.builtin.include_tasks: nfs.yml

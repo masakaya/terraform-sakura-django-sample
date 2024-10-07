@@ -4,24 +4,17 @@ data "sakuracloud_dns" "main" {
   }
 }
 
-# resource "sakuracloud_dns_record" "main" {
-#   dns_id = sakuracloud_dns.main.id
-#   name   = "@"
-#   type   = "A"
-#   value  = module.server["web"].ip_address
-# }
-
-# resource "sakuracloud_dns_record" "acme" {
-#    dns_id = data.sakuracloud_dns.main.id
-#    name   = "_acme-challenge.www.${var.domain}"
-#    type   = "NS"
-#    value  = "acme.example.jp."
-# }
-
-
-resource "sakuracloud_dns_record" "proxylb" {
+resource "sakuracloud_dns_record" "web" {
   dns_id = data.sakuracloud_dns.main.id
   name   = "www"
+  type   = "CNAME"
+  value  = "${sakuracloud_proxylb.main.fqdn}."
+  ttl    = 10
+}
+
+resource "sakuracloud_dns_record" "mng" {
+  dns_id = data.sakuracloud_dns.main.id
+  name   = "mng"
   type   = "CNAME"
   value  = "${sakuracloud_proxylb.main.fqdn}."
   ttl    = 10

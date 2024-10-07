@@ -22,7 +22,8 @@ resource "sakuracloud_packet_filter_rules" "web" {
   # Web application用ポート
   expression {
     protocol         = "tcp"
-    destination_port = "443"
+    destination_port = "80"
+    source_network   = sakuracloud_proxylb.main.proxy_networks
     description      = "web application port"
   }
 
@@ -139,8 +140,9 @@ resource "sakuracloud_packet_filter_rules" "mng" {
   # Management server用ポート
   expression {
     protocol         = "tcp"
-    destination_port = "443"
-    description      = "web application port"
+    destination_port = "80"
+    source_network   = sakuracloud_proxylb.main.proxy_networks
+    description      = "zabbix front port"
   }
 
   expression {
