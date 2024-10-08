@@ -128,3 +128,9 @@ variable "private_filter_id" {
   type        = string
   description = "server of packet filter rules"
 }
+
+variable "disk_resource_id" {
+  type        = string
+  default     = "113601947035"
+  description = "Ubuntu Server 24.04.1 LTS 64bitの固定リソースID" 
+}

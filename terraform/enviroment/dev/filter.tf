@@ -23,8 +23,8 @@ resource "sakuracloud_packet_filter_rules" "web" {
   expression {
     protocol         = "tcp"
     destination_port = "80"
-    source_network   = sakuracloud_proxylb.main.proxy_networks
     description      = "web application port"
+    source_network   = sakuracloud_proxylb.main.proxy_networks[0]
   }
 
   expression {
@@ -141,8 +141,8 @@ resource "sakuracloud_packet_filter_rules" "mng" {
   expression {
     protocol         = "tcp"
     destination_port = "80"
-    source_network   = sakuracloud_proxylb.main.proxy_networks
     description      = "zabbix front port"
+    source_network   = sakuracloud_proxylb.main.proxy_networks[0]
   }
 
   expression {
