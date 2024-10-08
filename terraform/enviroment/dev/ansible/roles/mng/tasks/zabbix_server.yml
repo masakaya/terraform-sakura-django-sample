@@ -51,3 +51,10 @@
   ansible.builtin.shell: locale-gen
   args:
     executable: /bin/bash
+
+- name: zabbix | update zabbix web config
+  template:
+    src: ./templates/zabbix.web.conf.php.j2
+    dest: "{{ zabbix_web_conf_path }}"
+    backup: true
+  notify: Restart Zabbix
