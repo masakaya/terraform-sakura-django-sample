@@ -1,8 +1,4 @@
 ---
-- name: Setup NFS
-  ansible.builtin.include_tasks: nfs.yml
-
-
 - name: Install zabbix package
   ansible.builtin.apt:
     name: 

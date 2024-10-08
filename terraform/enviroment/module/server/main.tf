@@ -1,5 +1,8 @@
 data "sakuracloud_archive" "ubuntu" {
-  os_type = var.os
+  //os_type = var.os
+  filter {
+    id = var.disk_resource_id
+  }
 }
 
 resource "sakuracloud_disk" "main" {

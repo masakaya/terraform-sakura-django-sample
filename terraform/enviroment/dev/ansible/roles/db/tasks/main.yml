@@ -6,18 +6,10 @@
     name: 
     - postgresql-{{ postgresql_version }}
     - postgresql-contrib
+    - zabbix-agent
     - nfs-common
     - libpq-dev
     state: present
-
-# - name: Copy new pg_hba.conf for all users
-#   copy:
-#     src: ./files/pg_hba.conf
-#     dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
-#     owner: postgres
-#     group: postgres
-#     mode: '0600'
-#   notify: Restart PostgreSQL # See ./handlers/main.yml
 
 - name: Configure PostgreSQL. Set listen_addresses.
   lineinfile: 

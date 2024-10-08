@@ -2,6 +2,7 @@
 # Zabbix
 zabbix_conf_path: /etc/zabbix/zabbix_server.conf
 zabbix_nginx_conf_path: /etc/zabbix/nginx.conf
+zabbix_web_conf_path: /etc/zabbix/web/zabbix.conf.php
 
 zabbix_server_config:
   db_name: "zabbix"

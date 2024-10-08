@@ -20,15 +20,24 @@
     - vars/ssl.yml
     - vars/nfs.yml
     - vars/common.yml
+    - vars/zabbix.yml
     - vars/lb.yml
   hosts: web
-  gather_facts: false
+  gather_facts: true
 
   tasks:
     # Web Serverのセッティング
     - name: Webserver Setting
       ansible.builtin.import_role:
         name: web
+   
+    - name: Zabbix agent Setting
+      ansible.builtin.import_role:
+        name: community.zabbix.zabbix_agent
+      vars:
+        zabbix_agent_hostname: "Web Server"
+        zabbix_agent_server: "{{ local_zabbix_agent_server }}"
+        zabbix_agent_serveractive: "{{ local_zabbix_agent_serveractive }}"
   tags: 
   - "web"
   vars:
@@ -38,15 +47,24 @@
   become: true
   vars_files:
     - vars/common.yml
+    - vars/zabbix.yml
     - roles/db/vars/postgresql.yml
     - roles/db/vars/root.yml
     - roles/db/vars/user.yml
   hosts: db
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Database Setting
       ansible.builtin.import_role:
         name: db
+    
+    - name: Zabbix agent Setting
+      ansible.builtin.import_role:
+        name: community.zabbix.zabbix_agent
+      vars:
+        zabbix_agent_hostname: "Database Server"
+        zabbix_agent_server: "{{ local_zabbix_agent_server }}"
+        zabbix_agent_serveractive: "{{ local_zabbix_agent_serveractive }}"
   tags:
   - "db"
   vars:

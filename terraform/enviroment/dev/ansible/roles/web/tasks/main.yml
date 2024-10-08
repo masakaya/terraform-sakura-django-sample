@@ -3,7 +3,6 @@
   ansible.builtin.apt:
     name: 
     - git
-    - zabbix-agent
     state: present
 
 - name: disabled site-enabled
@@ -19,3 +18,5 @@
 
 - name: Setup NFS
   ansible.builtin.include_tasks: nfs.yml
+
+

@@ -37,7 +37,7 @@ resource "sakuracloud_proxylb" "main" {
   }
   rule {
     host  = "www.${var.domain}"
-    path  = "/"
+    path  = "/*"
     group = "group1"
   }
 
@@ -49,7 +49,7 @@ resource "sakuracloud_proxylb" "main" {
   }
   rule {
     host  = "mng.${var.domain}"
-    path  = "/"
+    path  = "/*"
     group = "group2"
   }
 
@@ -60,17 +60,4 @@ resource "sakuracloud_proxylb" "main" {
   }
 
 }
-
-# resource "sakuracloud_proxylb_acme" "main" {
-#   proxylb_id = sakuracloud_proxylb.main.id
-#   accept_tos = true
-#   #common_name      = sakuracloud_proxylb.main.vip
-#   common_name       = "www.${var.domain}"
-#   subject_alt_names = var.subject_alternative_names
-
-#   update_delay_sec = 120
-#   #get_certificates_timeout_sec = 120 
-
-# }
-
 
