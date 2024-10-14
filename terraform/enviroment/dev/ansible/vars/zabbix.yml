@@ -1,0 +1,2 @@
+local_zabbix_agent_server: 192.168.0.30
+local_zabbix_agent_serveractive: 192.168.0.30
