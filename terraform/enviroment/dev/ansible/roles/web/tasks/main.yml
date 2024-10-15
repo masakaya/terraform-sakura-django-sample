@@ -3,6 +3,7 @@
   ansible.builtin.apt:
     name: 
     - git
+    - nginx
     state: present
 
 - name: disabled site-enabled

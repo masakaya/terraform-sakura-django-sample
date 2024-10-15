@@ -29,8 +29,8 @@ locals {
       gateway          = sakuracloud_internet.router.gateway
       private_ip       = sakuracloud_internet.router.ip_addresses[9]
       filter_id        = sakuracloud_packet_filter.db.id
-      core             = 2 // 要件に応じて修正
-      memory           = 4 // 要件に応じて修正
+      core             = 1 // 要件に応じて修正
+      memory           = 2 // 要件に応じて修正
       hostname         = "database-01"
       description      = "Database server"
       local_private_ip = "192.168.0.20"
@@ -43,8 +43,8 @@ locals {
       gateway          = sakuracloud_internet.router.gateway
       private_ip       = sakuracloud_internet.router.ip_addresses[10]
       filter_id        = sakuracloud_packet_filter.mng.id
-      core             = 1 // 要件に応じて修正
-      memory           = 1 // 要件に応じて修正
+      core             = 2 // 要件に応じて修正
+      memory           = 4 // 要件に応じて修正
       hostname         = "manage-01"
       description      = "Management server"
       local_private_ip = "192.168.0.30"

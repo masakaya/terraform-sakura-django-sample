@@ -6,7 +6,7 @@ zabbix_web_conf_path: /etc/zabbix/web/zabbix.conf.php
 
 zabbix_server_config:
   db_name: "zabbix"
-  db_host: "192.168.0.20"
+  db_host: "localhost"
   db_port: "5432"
   db_user: "zabbix"
   db_password: "password1"

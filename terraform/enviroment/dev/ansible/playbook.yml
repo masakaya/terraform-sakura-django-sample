@@ -76,8 +76,8 @@
     - vars/nfs.yml
     - vars/common.yml
     - vars/lb.yml
-    - roles/db/vars/postgresql.yml
-    - roles/mng/vars/configuration.yml
+    - roles/mng/vars/zabbix_server.yml
+    - roles/mng/vars/zabbix_database.yml
   hosts: mng 
   gather_facts: false
   tasks:

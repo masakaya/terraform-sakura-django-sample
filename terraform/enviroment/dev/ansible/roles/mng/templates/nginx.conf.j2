@@ -1,5 +1,6 @@
 server {
         listen              80 proxy_protocol;
+        # 400エラーが出た場合はLBのProxy Protocolを無効→有効。一度コメントアウトし、nginxを再起動すること
         set_real_ip_from    {{ lb_networks }};
         real_ip_header proxy_protocol;
         
