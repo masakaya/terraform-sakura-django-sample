@@ -8,6 +8,9 @@ server {
         root /var/www/html;
         index index.html index.htm index.nginx-debian.html;
 
+        access_log syslog:server={{ syslog_server }}:514,facility=local7,tag=nginx_access,severity=info;
+        error_log  syslog:server={{ syslog_server }}:514,facility=local7,tag=nginx_error,severity=info;
+        
         location / {
                 try_files $uri $uri/ =404;
         }

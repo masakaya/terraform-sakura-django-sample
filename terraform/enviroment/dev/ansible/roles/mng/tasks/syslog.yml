@@ -1,0 +1,21 @@
+---
+- name: Install rsyslog
+  ansible.builtin.apt:
+    name: 
+    - rsyslog
+
+- name: Configure rsyslog for nginx
+  ansible.builtin.copy:
+    src: ./files/rsyslog.nginx.conf
+    dest: /etc/rsyslog.d/nginx.conf
+
+- name: Configure rsyslog to listen on UDP and TCP ports
+  lineinfile:
+    path: /etc/rsyslog.conf
+    line: "{{ item }}"
+    state: present
+  loop:
+    - "module(load=\"imudp\")"
+    - "input(type=\"imudp\" port=\"514\")"
+  notify: Restart rsyslog
+
