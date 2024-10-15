@@ -18,7 +18,16 @@
     state=present
   notify: Restart PostgreSQL
 
-- name: Update pg_hba
+- name: Update pg_hba(local)
+  community.postgresql.postgresql_pg_hba:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    contype: local
+    source: all
+    method: md5
+    state: present
+  notify: Restart PostgreSQL
+
+- name: Update pg_hba(lan)
   community.postgresql.postgresql_pg_hba:
     dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
     contype: host
@@ -37,16 +46,15 @@
     state: present
   notify: Restart PostgreSQL
 
-
 - name: Change postgres root password
   user:
     name: "{{ postgres_user }}"
     password: "{{ postgres_password | password_hash('sha256')}}"
 
-- name: Create zabbix database
+- name: Create application database
   become_user: postgres
   community.postgresql.postgresql_db:
-    name: zabbix
+    name: app
     port: "{{ postgresql_port }}"
     state: present
 

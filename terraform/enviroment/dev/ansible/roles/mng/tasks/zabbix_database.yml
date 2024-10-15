@@ -1,6 +1,66 @@
 ---
+- name: configure / Configure PostgreSQL. Set listen_addresses.
+  lineinfile: 
+    dest=/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+    regexp="listen_addresses =" line="listen_addresses = '*'"
+    state=present
+
+- name: Update pg_hba
+  community.postgresql.postgresql_pg_hba:
+    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+    contype: host
+    source: 192.168.0.0/24
+    method: md5
+    state: present
+  notify: Restart PostgreSQL
+
+- name: Change postgres root password
+  user:
+    name: "{{ postgres_user }}"
+    password: "{{ postgres_password | password_hash('sha256')}}"
+
+- name: Create zabbix database
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: zabbix
+    port: "{{ postgresql_port }}"
+    state: present
+
+- name: Create database user
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    db: "{{ item.db }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    role_attr_flags: NOSUPERUSER,NOCREATEDB,NOCREATEROLE
+    port: "{{ postgresql_port }}"
+    encrypted: yes
+    state: present
+  with_items: "{{ zabbix_users }}"
+
+# ユーザ毎にスキーマを作成する
+- name: Create zabbix schema
+  become_user: postgres
+  community.postgresql.postgresql_schema:
+    name: "{{ item.default_schema }}"
+    database: "{{ item.db }}"
+    owner: "{{ item.name }}"
+    port: "{{ postgresql_port }}"
+    state: present
+  with_items: "{{ zabbix_users }}"
+
+# デフォルトスキーマ変更
+- name: Set default search_path
+  become_user: postgres
+  community.postgresql.postgresql_query:
+    db: postgres
+    port: "{{ postgresql_port }}"
+    query: |
+      ALTER USER {{ item.name }} SET search_path TO {{ item.default_schema }}, public;
+  with_items: "{{ zabbix_users }}"
+
 # 初期化用DBを登録
-- name: Setup initialize database
+- name: configure / initialize database
   community.postgresql.postgresql_db:
     name: "{{ zabbix_server_config.db_name }}"
     login_host: "{{ zabbix_server_config.db_host  }}"

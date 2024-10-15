@@ -1,7 +1,12 @@
 ---
+# Admin password
+postgres_user: postgres
+postgres_password: testtest
+
+# Database Users
 postgresql_users:
-  - db: "zabbix"
-    name: "zabbix"
+  - db: "app"
+    name: "admin"
     password: "password1" # あとでvaultで暗号化する
     port: 5432
-    default_schema: "zabbix"
+    default_schema: "app"
