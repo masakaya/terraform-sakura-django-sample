@@ -188,7 +188,7 @@ resource "sakuracloud_packet_filter_rules" "private" {
 
   # Management server用ポート
   expression {
-    protocol       = "tcp"
+    protocol       = "udp"
     source_network = "192.168.0.0/24"
   }
 

@@ -12,3 +12,15 @@
     enabled: true
   loop: "{{ zabbix_service_list }}"
 
+- name: Restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+
+
+
+
+
+
+
+

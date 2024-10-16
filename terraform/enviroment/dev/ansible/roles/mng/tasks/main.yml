@@ -26,3 +26,6 @@
 
 - name: Setup Nginx config
   ansible.builtin.include_tasks: zabbix_nginx.yml
+
+- name: Setup rsyslog
+  ansible.builtin.include_tasks: syslog.yml
