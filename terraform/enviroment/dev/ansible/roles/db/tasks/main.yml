@@ -90,3 +90,11 @@
     query: |
       ALTER USER {{ item.name }} SET search_path TO {{ item.default_schema }}, public;
   with_items: "{{ postgresql_users }}"
+
+- name: Zabbix agent Setting
+  ansible.builtin.import_role:
+    name: community.zabbix.zabbix_agent
+  vars:
+    zabbix_agent_hostname: "Database Server"
+    zabbix_agent_server: "{{ local_zabbix_agent_server }}"
+    zabbix_agent_serveractive: "{{ local_zabbix_agent_serveractive }}"
