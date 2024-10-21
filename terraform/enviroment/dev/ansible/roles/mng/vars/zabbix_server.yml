@@ -17,6 +17,3 @@ zabbix_service_list:
 - zabbix-agent
 - nginx
 - php8.3-fpm
-
-# ssl
-nginx_ssh_conf_path: /etc/nginx/conf.d/nginx.ssl.conf

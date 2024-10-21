@@ -1,0 +1,19 @@
+[TEST_PSQL]
+Description=PostgreSQL Test Database
+Driver=postgresql
+Username={{ application.database_user }}
+Password={{ application.database_password }}
+Servername={{ application.database_server }}
+Database={{ application.database_name }}
+Port={{ application.database_port }}
+ReadOnly=No
+Protocol=7.4+
+ShowOidColumn=No
+FakeOidIndex=No
+RowVersioning=No
+ShowSystemTables=No
+Fetch=Yes
+BoolsAsChar=Yes
+#SSLmode=Require
+ConnSettings=
+~                                                                                            

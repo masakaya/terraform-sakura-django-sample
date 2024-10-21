@@ -62,8 +62,6 @@
     - vars/nfs.yml
     - vars/common.yml
     - vars/lb.yml
-    - roles/mng/vars/zabbix_server.yml
-    - roles/mng/vars/zabbix_database.yml
   hosts: mng 
   gather_facts: true
   tasks:

@@ -1,0 +1,7 @@
+---
+application:
+  database_name: "app"
+  database_user: "admin"
+  database_password: "password1" # あとでvaultで暗号化する
+  database_server: "192.168.0.20"
+  database_port: 5432

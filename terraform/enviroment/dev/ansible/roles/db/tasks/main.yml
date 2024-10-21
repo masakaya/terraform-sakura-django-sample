@@ -98,3 +98,5 @@
     zabbix_agent_hostname: "Database Server"
     zabbix_agent_server: "{{ local_zabbix_agent_server }}"
     zabbix_agent_serveractive: "{{ local_zabbix_agent_serveractive }}"
+    zabbix_agent_hostmetadata: "system.uname"
+    zabbix_agent_hostmetadataitem: "Database"
