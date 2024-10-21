@@ -16,13 +16,27 @@
     - language-pack-ja-base
     - language-pack-ja
     - ibus-mozc
+    - unixodbc
+    - unixodbc-dev
+    - odbc-postgresql
     state: present
+
+- name: load vars_file
+  include_vars:
+    dir: ../vars
+    files_matching:
+    - odbc.yml
+    - zabbix_database.yml
+    - zabbix_server.yml
 
 - name: Setup Zabbix database
   ansible.builtin.include_tasks: zabbix_database.yml
 
 - name: Setup Zabbix server 
   ansible.builtin.include_tasks: zabbix_server.yml
+
+- name: Setup odbc 
+  ansible.builtin.include_tasks: odbc.yml
 
 - name: Setup Nginx config
   ansible.builtin.include_tasks: zabbix_nginx.yml
