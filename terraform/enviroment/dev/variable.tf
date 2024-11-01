@@ -60,3 +60,9 @@ variable "api_key_id" {
   description = "オートスケール"
   default     = "113601543605" // APIキーの払い出しによって可変なため、tfval化を行うこと
 }
+
+variable "allow_access_manage_server_ips" {
+  type       = list(string)
+  description = "管理サーバーにアクセスを許可されたIPリスト"
+  default = ["106.172.6.226","106.172.6.227"]
+}
