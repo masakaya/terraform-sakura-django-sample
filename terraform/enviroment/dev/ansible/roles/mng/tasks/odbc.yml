@@ -1,0 +1,12 @@
+---
+- name: zabbix | odbc setting(odbc.ini)
+  template:
+    src: ./templates/odbc.ini.j2
+    dest: /etc/odbc.ini
+    backup: true
+
+- name: zabbix | odbc postgresql setting(odbcinst.ini)
+  template:
+    src: ./templates/odbcinst.ini.j2
+    dest: /etc/odbcinst.ini
+    backup: true
