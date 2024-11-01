@@ -1,4 +1,12 @@
 ---
+- name: load vars_file
+  include_vars:
+    dir: ../vars
+    files_matching:
+    - odbc.yml
+    - zabbix_database.yml
+    - zabbix_server.yml
+
 - name: Install zabbix package
   ansible.builtin.apt:
     name: 
@@ -21,25 +29,17 @@
     - odbc-postgresql
     state: present
 
-- name: load vars_file
-  include_vars:
-    dir: ../vars
-    files_matching:
-    - odbc.yml
-    - zabbix_database.yml
-    - zabbix_server.yml
-
 - name: Setup Zabbix database
   ansible.builtin.include_tasks: zabbix_database.yml
+
+- name: Setup Nginx config
+  ansible.builtin.include_tasks: zabbix_nginx.yml
 
 - name: Setup Zabbix server 
   ansible.builtin.include_tasks: zabbix_server.yml
 
 - name: Setup odbc 
   ansible.builtin.include_tasks: odbc.yml
-
-- name: Setup Nginx config
-  ansible.builtin.include_tasks: zabbix_nginx.yml
 
 - name: Setup rsyslog
   ansible.builtin.include_tasks: syslog.yml
