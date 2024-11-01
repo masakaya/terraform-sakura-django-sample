@@ -1,0 +1,19 @@
+---
+- name: Install package
+  ansible.builtin.apt:
+    name: 
+    - git
+    state: present
+
+- name: Zabbix agent Setting
+  ansible.builtin.import_role:
+    name: community.zabbix.zabbix_agent
+  vars:
+    zabbix_agent_hostname: "Batch Server"
+    zabbix_agent_server: "{{ local_zabbix_agent_server }}"
+    zabbix_agent_serveractive: "{{ local_zabbix_agent_serveractive }}"
+    zabbix_agent_hostmetadata: "system.uname"
+    zabbix_agent_hostmetadataitem: "Batch"
+
+- name: Setup NFS
+  ansible.builtin.include_tasks: nfs.yml

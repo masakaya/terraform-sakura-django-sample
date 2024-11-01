@@ -17,7 +17,6 @@
 - name: Deploy web system
   become: true
   vars_files:
-    - vars/ssl.yml
     - vars/nfs.yml
     - vars/common.yml
     - vars/zabbix.yml
@@ -32,6 +31,24 @@
         name: web
   tags: 
   - "web"
+  vars:
+    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+
+- name: Deploy batch system
+  become: true
+  vars_files:
+    - vars/nfs.yml
+    - vars/common.yml
+    - vars/zabbix.yml
+  hosts: batch
+  gather_facts: true
+  tasks:
+    # Web Serverのセッティング
+    - name: Batch server Setting
+      ansible.builtin.import_role:
+        name: batch
+  tags: 
+  - "batch"
   vars:
     ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 
@@ -53,8 +70,6 @@
   - "db"
   vars:
     ansible_ssh_private_key_file: "{{ ssh_key_path }}"
-
-
 
 - name: Setup management server
   become: true
