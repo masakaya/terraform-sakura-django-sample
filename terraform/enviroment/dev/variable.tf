@@ -62,7 +62,7 @@ variable "api_key_id" {
 }
 
 variable "allow_access_manage_server_ips" {
-  type       = list(string)
+  type        = list(string)
   description = "管理サーバーにアクセスを許可されたIPリスト"
-  default = ["106.172.6.226","106.172.6.227"]
+  default     = ["106.172.6.226", "106.172.6.227"]
 }

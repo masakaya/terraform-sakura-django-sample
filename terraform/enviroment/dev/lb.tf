@@ -48,10 +48,10 @@ resource "sakuracloud_proxylb" "main" {
     group      = "group2"
   }
   rule {
-    host  = "mng.${var.domain}"
-    path  = "/*"
-    group = "group2"
-    source_ips = join("," , var.allow_access_manage_server_ips)
+    host       = "mng.${var.domain}"
+    path       = "/*"
+    group      = "group2"
+    source_ips = join(",", var.allow_access_manage_server_ips)
   }
 
   certificate {
