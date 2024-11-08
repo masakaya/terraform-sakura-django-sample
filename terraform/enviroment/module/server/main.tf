@@ -12,6 +12,7 @@ resource "sakuracloud_disk" "main" {
   connector         = "virtio"
   source_archive_id = data.sakuracloud_archive.ubuntu.id
   zone              = var.zone
+  //encryption_algorithm = "aes256_xts"
 }
 
 # 作成するサーバを定義

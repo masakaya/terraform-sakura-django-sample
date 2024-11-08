@@ -76,3 +76,21 @@ ansible-vault encrypt ./ansible/roles/db/vars/root.yml --vault-pass-file ./ansib
 # varsファイルを復号してplaybookを実行
 ansible-playbook -i  inventory.yml ./ansible/playbook.yml --vault-pass-file ./ansible/vault-password.txt
 ```
+
+
+
+
+
+## トラブルシューティング
+
+### 監視サーバー（zabbix）にて4xxエラーの場合
+
+初回セットアップ時、zabbixサーバーを起動すると、
+`nginx`にてエラーを返す場合があるそうした場合は以下の手順を実行すること
+
+1. `mng`サーバーへログインする
+2. 以下のコマンドを実行する
+   1. `sudo systemctl restart nginx`
+
+
+
