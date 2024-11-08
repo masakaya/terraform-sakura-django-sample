@@ -8,18 +8,18 @@ locals {
   }
 
   scale_server = {
-    server_count     = var.server_count
-    suffix           = "web"
-    disk_size        = 20 // 要件に応じて修正
-    switch_id        = sakuracloud_internet.router.switch_id
-    gateway          = sakuracloud_internet.router.gateway
-//    private_ip       = sakuracloud_internet.router.ip_addresses[0]
-    filter_id        = sakuracloud_packet_filter.web.id
-    core             = 1 // 要件に応じて修正
-    memory           = 1 // 要件に応じて修正
-    disk_plan        = "ssd"
-    hostname         = "web-%s"
-    description      = "Web Server %s"
+    server_count = var.server_count
+    suffix       = "web"
+    disk_size    = 20 // 要件に応じて修正
+    switch_id    = sakuracloud_internet.router.switch_id
+    gateway      = sakuracloud_internet.router.gateway
+    //    private_ip       = sakuracloud_internet.router.ip_addresses[0]
+    filter_id          = sakuracloud_packet_filter.web.id
+    core               = 1 // 要件に応じて修正
+    memory             = 1 // 要件に応じて修正
+    disk_plan          = "ssd"
+    hostname           = "web-%s"
+    description        = "Web Server %s"
     local_private_cidr = "192.168.0.0/24"
   }
 

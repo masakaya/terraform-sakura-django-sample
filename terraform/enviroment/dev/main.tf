@@ -3,7 +3,7 @@ module "scale_server" {
   providers = {
     sakuracloud = sakuracloud.default
   }
-  count = local.scale_server.server_count
+  count             = local.scale_server.server_count
   service           = var.service
   env               = var.env
   source            = "../module/server"
@@ -16,8 +16,8 @@ module "scale_server" {
   filter_id         = local.scale_server.filter_id
   core              = local.scale_server.core
   memory            = local.scale_server.memory
-  description       = format("${local.scale_server.description}", count.index + 1) 
-  disk_plan         = local.scale_server.disk_plan 
+  description       = format("${local.scale_server.description}", count.index + 1)
+  disk_plan         = local.scale_server.disk_plan
   hostname          = format("${local.scale_server.hostname}", count.index + 1)
   password          = var.password
   ssh_key_ids       = ["${sakuracloud_ssh_key_gen.main.id}"]
@@ -47,7 +47,7 @@ module "server" {
   core              = each.value.core
   memory            = each.value.memory
   description       = each.value.description
-  disk_plan         = each.value.disk_plan 
+  disk_plan         = each.value.disk_plan
   hostname          = each.value.hostname
   password          = var.password
   ssh_key_ids       = ["${sakuracloud_ssh_key_gen.main.id}"]
