@@ -69,6 +69,6 @@ variable "allow_access_manage_server_ips" {
 
 variable "server_count" {
   type        = number
-  description = "フロント用のウェブサーバーを何台保持するか？（最大で6台まで）"
-  default     = 2
+  description = "ウェブサーバーを何台保持するか？（最大で5台まで）"
+  default     = 1
 }

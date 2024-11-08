@@ -77,9 +77,16 @@ ansible-vault encrypt ./ansible/roles/db/vars/root.yml --vault-pass-file ./ansib
 ansible-playbook -i  inventory.yml ./ansible/playbook.yml --vault-pass-file ./ansible/vault-password.txt
 ```
 
+## ウェブサーバーのスケール方法
 
+以下の理由により、terraform + ansibleによる
+- クラウドプロバイダのスケールにかかる時間(10分)
+- プロダクトの特性上、急激なスパイクは発生しない
 
-
+1. `variable.tf`にて以下の設定を修正する
+   - `server_count`
+2. `terraform apply`を実行する
+3. `ansible-playbook`コマンドを実行する
 
 ## トラブルシューティング
 
@@ -91,6 +98,5 @@ ansible-playbook -i  inventory.yml ./ansible/playbook.yml --vault-pass-file ./an
 1. `mng`サーバーへログインする
 2. 以下のコマンドを実行する
    1. `sudo systemctl restart nginx`
-
 
 
