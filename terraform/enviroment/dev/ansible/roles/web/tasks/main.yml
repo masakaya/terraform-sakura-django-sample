@@ -6,6 +6,13 @@
     - nginx
     state: present
 
+- name: nginx.confの編集 - server_tokensの無効
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    state: present
+    insertbefore: 'include /etc/nginx/conf.d/\*.conf;'
+    line: '    server_tokens off;'
+
 - name: disabled site-enabled
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
@@ -29,5 +36,3 @@
 
 - name: Setup NFS
   ansible.builtin.include_tasks: nfs.yml
-
-
