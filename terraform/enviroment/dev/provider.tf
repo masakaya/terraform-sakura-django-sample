@@ -3,7 +3,7 @@ terraform {
   required_providers {
     sakuracloud = {
       source  = "sacloud/sakuracloud"
-      version = "2.25.4"
+      version = "2.25.5"
     }
     ansible = {
       version = "~> 1.3.0"

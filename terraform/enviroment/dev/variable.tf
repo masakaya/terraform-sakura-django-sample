@@ -66,3 +66,9 @@ variable "allow_access_manage_server_ips" {
   description = "管理サーバーにアクセスを許可されたIPリスト"
   default     = ["106.172.6.226", "106.172.6.227"]
 }
+
+variable "server_count" {
+  type        = number
+  description = "ウェブサーバーを何台保持するか？（最大で5台まで）"
+  default     = 1
+}

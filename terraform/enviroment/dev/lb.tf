@@ -30,10 +30,13 @@ resource "sakuracloud_proxylb" "main" {
   # }
 
   # Webサーバー 
-  server {
-    ip_address = module.server["web"].ip_address
-    port       = 80
-    group      = "group1"
+  dynamic "server" {
+    for_each = range(local.scale_server.server_count)
+    content {
+      ip_address = module.scale_server[server.value].ip_address
+      port       = 80
+      group      = "group1"
+    }
   }
   rule {
     host  = "www.${var.domain}"

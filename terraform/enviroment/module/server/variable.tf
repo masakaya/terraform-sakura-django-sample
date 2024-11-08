@@ -134,3 +134,9 @@ variable "disk_resource_id" {
   default     = "113601947035"
   description = "Ubuntu Server 24.04.1 LTS 64bitの固定リソースID"
 }
+
+variable "disk_plan" {
+  type        = string
+  default     = "ssd"
+  description = "ディスクプラン(ssd or hdd)"
+}
