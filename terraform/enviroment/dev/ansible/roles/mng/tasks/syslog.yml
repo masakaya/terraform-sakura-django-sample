@@ -19,3 +19,9 @@
     - "input(type=\"imudp\" port=\"514\")"
   notify: Restart rsyslog
 
+
+- name: Configure logrotate for nginx
+  ansible.builtin.copy:
+    src: ./files/logrotate.nginx.conf
+    dest: /etc/logrotate.d/rsyslog.nginx
+  notify: Restart rsyslog
