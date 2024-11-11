@@ -23,11 +23,11 @@ resource "sakuracloud_proxylb" "main" {
     port       = 443
   }
 
-  # syslog
-  # syslog {
-  #   server = module.server["mng"].ip_address
-  #   port   = 514
-  # }
+  #syslog
+  syslog {
+    server = module.server["mng"].ip_address
+    port   = 514
+  }
 
   # Webサーバー 
   dynamic "server" {
