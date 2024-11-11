@@ -52,7 +52,7 @@ resource "sakuracloud_server" "main" {
 }
 
 resource "sakuracloud_note" "netplan_setup" {
-  name = "netplan-setup-script"
+  name = "netplan-setup-script-${var.suffix}"
   tags = ["netplan", "setup"]
 
   content = <<EOF

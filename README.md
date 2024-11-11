@@ -88,6 +88,55 @@ ansible-playbook -i  inventory.yml ./ansible/playbook.yml --vault-pass-file ./an
 2. `terraform apply`を実行する
 3. `ansible-playbook`コマンドを実行する
 
+## DBサーバーのリストア手順
+
+データベースサーバーはデイリーでバックアップを取っており、１日前までのデータの復旧は可能となっている。
+以下にデータベースサーバーのリストア手順を明記する。
+
+1. DBをterraform/ansibleの除外設定を行う
+
+- リストアしたデータベースサーバーはterraformの管理外となる。
+- 破損元のデータベースサーバー削除後に`terraform apply`を再実行するとDBサーバーが再作成されてしまう。以下のコマンドでデータベースサーバーの除外設定を行うこと
+
+```
+terraform state rm 'module.server["db"]'
+terraform state rm 'ansible_host.servers["db"]'
+```
+
+2. データベースサーバーのバックアップの確認
+  - 「ストレージ > アーカイブ」リストアしたいアーカイブを確認すること
+
+3. データベースサーバーのリスト
+   1. 「サーバー > 追加」にて以下の設定を行う
+     - サーバープラン：任意のもの
+     - ディスク
+       - ディスクソース：マイアーカイブ
+       - マイアーカイブ選択：リストアしたいアーカイブを指定
+       - ディスクサイズ：任意
+       - ディスク暗号化：任意（※自動バックアップを行う場合は暗号化はできないため注意）
+       - その他：デフォルトの設定
+     - NIC
+       - スイッチに接続（routerを設定）
+       - パケットフィルタ：選択（データベースサーバー用のパケットフィルタを選択）
+     - ディスク修正：チェック
+       - IPアドレス：データベースサーバーのIPに変更する
+       - 公開鍵：クラウドアカウントから選択（データベースサーバのSSH鍵を指定する）
+       - スタートアップスクリプト
+         - shell (データベースサーバ用のスクリプトを選択)
+     - サーバー情報：任意（わかりやすい名前にすること）
+
+4. 「作成」をクリック
+5. NICの設定
+   1. サーバーをシャットダウン
+   2. NICタブ > 「追加」
+   3. 「編集」 > NIC スイッチに接続（nfs用のスイッチに接続）
+   4. パケットフィルタ「local用のフィルタ」を指定
+   5. サーバーを起動し`sudo netplan apply`を実行
+   6. `ip a`にて`eth1`が追加されていることを確認する
+
+### 注意点
+IPアドレスが重複するため、DBをリストアする場合は元のデータベースサーバーをシャットダウン（or 削除）した状態にしてください。
+
 ## トラブルシューティング
 
 ### 監視サーバー（zabbix）にて4xxエラーの場合
@@ -99,4 +148,14 @@ ansible-playbook -i  inventory.yml ./ansible/playbook.yml --vault-pass-file ./an
 2. 以下のコマンドを実行する
    1. `sudo systemctl restart nginx`
 
+### データベースサーバーを誤ってterraform管理外にしてしまった場合の復旧方法
 
+以下のコマンドを実行して、terraformの管理下に配置する。
+
+```
+ terraform import 'module.server["db"].sakuracloud_disk.main' 'サーバー > ディスク > リソースID'
+ terraform import 'module.server["db"].sakuracloud_note.netplan_setup `リソースマネージャ > スクリプト > netplan-setup-script-dbのリソースID`'
+terraform import 'module.server["db"].sakuracloud_server.main'
+ 'サーバー > 情報 > リソースID'
+ terraform apply
+ ```
