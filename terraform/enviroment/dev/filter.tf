@@ -146,6 +146,13 @@ resource "sakuracloud_packet_filter_rules" "mng" {
   }
 
   expression {
+    protocol         = "udp"
+    destination_port = "514"
+    description      = "allow syslog"
+    source_network   = sakuracloud_proxylb.main.proxy_networks[0]
+  }
+
+  expression {
     protocol         = "tcp"
     destination_port = "32768-61000"
   }
