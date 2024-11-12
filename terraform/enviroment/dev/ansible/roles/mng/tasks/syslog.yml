@@ -26,6 +26,6 @@
 
 - name: Configure logrotate for nginx
   ansible.builtin.copy:
-    src: ./files/logrotate.nginx.conf
-    dest: /etc/logrotate.d/rsyslog.nginx
+    src: ./files/logrotate.conf
+    dest: /etc/logrotate.d/rsyslog.mng
   notify: Restart rsyslog
