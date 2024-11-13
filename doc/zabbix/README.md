@@ -5,8 +5,9 @@
 2. Web監視
 3. ODBC監視（DB監視）
 4. ディスク監視
-5. ログ監視
-6. Slack通知
+5. CPU/RAM監視
+6. ログ監視
+7. Slack通知
 
 ## 1. サーバ自動追加設定
 
@@ -111,7 +112,21 @@ Linux by Zabbix agentにて以下の監視が行われるようになってい�
 - クリティカル：90%
 - ワーニング  ：80%
 
-## 5. ログ監視
+## 5. CPU/RAM監視
+
+### 前提条件:
+- 監視対象のサーバにZabbix Agentがインストールされていること
+- Linuxテンプレートが適用されていること(自動追加時の設定 Linux Servers. がつくように設定していること)
+
+### 手順:
+
+(事前条件のテンプレートにて監視設定が入っている)
+
+Linux by Zabbix agentにてCPU/RAMは以下の監視が行われるようになっている。
+- CPU：5分間の平均CPU利用率 90%を超える場合、`警告`を出力する
+- RAM：5分間の平均RAM利用率 90%を超える場合、`軽度の障害`を出力する
+
+## 6. ログ監視
 
 ### 前提条件:
 Zabbix監視サーバーにはsyslogサーバーにて各サーバーからログが収集されること
@@ -141,7 +156,7 @@ https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/lo
    - 式: `find(/Zabbix server/logrt["/var/log/rsyslog/nginx/access.log"],2m,"like",404)=1` 404が含まれていることを検知する
 3. 「追加」をクリックして保存します。
 
-## 6. Slack通知
+## 7. Slack通知
 
 ### 前提条件:
 - Slackワークスペースとチャンネルが準備されていること
