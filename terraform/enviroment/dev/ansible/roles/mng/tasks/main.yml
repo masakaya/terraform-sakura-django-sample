@@ -27,6 +27,7 @@
     - unixodbc
     - unixodbc-dev
     - odbc-postgresql
+    - snmp
     state: present
 
 - name: Setup Zabbix database

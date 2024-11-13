@@ -6,8 +6,9 @@
 3. ODBC監視（DB監視）
 4. ディスク監視
 5. CPU/RAM監視
-6. ログ監視
-7. Slack通知
+6. NFS監視（SNMP監視）
+7. ログ監視
+8. Slack通知
 
 ## 1. サーバ自動追加設定
 
@@ -126,7 +127,55 @@ Linux by Zabbix agentにてCPU/RAMは以下の監視が行われるようにな�
 - CPU：5分間の平均CPU利用率 90%を超える場合、`警告`を出力する
 - RAM：5分間の平均RAM利用率 90%を超える場合、`軽度の障害`を出力する
 
-## 6. ログ監視
+
+## 6. NFSディスクサイズ監視
+
+### 前提条件
+- 本設定は「さくらのクラウド」のNFSのディスク使用率をチェックするものであり、他のクラウドでは使えないため注意
+
+see: https://manual.sakura.ad.jp/cloud/appliance/nfs/?_gl=1*go7p6m*_gcl_aw*R0NMLjE3MzEyODM5MzguQ2owS0NRaUEwTUc1QmhEMUFSSXNBRWNadHdSeDRHd1R5T3RKdTF1UTJNY0RPdzJ6dnk2NVU5N3ZHMXFmT1pRQ1BOU0xOQkpXRVEzdzEwWWFBbjJNRUFMd193Y0I.*_gcl_au*MTYzNzMxOTA4NC4xNzI4OTY1MjEy#snmp
+
+1. ホストを追加する
+   1. 「収集データ > ホスト > ホストの作成」を選択し、以下の設定を入れる
+      - ホスト名：NFS
+      - 表示名：任意
+      - ホストグループ：Linux Server
+      - インタフェース：「追加 > SNMP」
+        - SNMP：192.168.0.101(NFSのIP) / ポート：161
+        - SNMPバージョン：SNMPv2
+        - SNMPコミュニティ：{$SNMP_COMMUNITY}
+      - マクロタブ：
+        - マクロ：{$SNMP_COMMUNITY}／値：`sacloudnfs` (さくらのクラウド固有)
+2. アイテムを追加
+   1. 「NFS > アイテム」を選択する
+   2. 「アイテムの作成」をクリックする
+   3. 以下の設定を行う。設定後、テストにて利用率（％）を取得できることを確認する。
+      - 名前： 任意
+      - タイプ：SNMPエージェント
+      - キー：`sakura.nfs.disk.used`
+      - データ型：整数型
+      - ホストインターフェース：`192.168.0.l01:161`
+      - SNMP OID: `get[.1.3.6.1.4.1.2021.9.1.9.1]`
+      - 監視感覚：1m
+   4. 「追加」ボタンにて追加する
+
+3. トリガーの追加(※Slackへの通知は後述にすること)
+   1. 「NFS > トリガー」を選択する
+   2. 「トリガーの作成」をクリックする
+   3. 以下の設定を行う。
+      - 名前：High nfs space usage
+      - 深刻度：任意
+      - 条件式：`last(/NFS/sakura.nfs.disk.used) > 90` (※90%を超えた場合を想定)
+   4. 「追加」ボタンにて追加する
+  
+4. グラフの追加
+   1. 「NFS > グラフ」を選択する
+   2. 以下の設定を行う。
+      - 名前： NFS space usage(%)
+      - アイテム：「追加 > ホスト：NFS Disk Used」
+   3. 「追加」ボタンにて追加する
+
+## 7. ログ監視
 
 ### 前提条件:
 Zabbix監視サーバーにはsyslogサーバーにて各サーバーからログが収集されること
@@ -156,7 +205,7 @@ https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/lo
    - 式: `find(/Zabbix server/logrt["/var/log/rsyslog/nginx/access.log"],2m,"like",404)=1` 404が含まれていることを検知する
 3. 「追加」をクリックして保存します。
 
-## 7. Slack通知
+## 8. Slack通知
 
 ### 前提条件:
 - Slackワークスペースとチャンネルが準備されていること
