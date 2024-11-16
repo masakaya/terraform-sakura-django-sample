@@ -58,6 +58,21 @@
     port: "{{ postgresql_port }}"
     state: present
 
+- name: Create monitoring user
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: "{{ monitor_user }}"
+    password: "{{ monitor_password }}"
+    role_attr_flags: INHERIT
+    state: present  # ユーザーが存在しない場合に作成
+
+- name: Grant pg_monitor role to zbx_monitor
+  become_user: postgres
+  community.postgresql.postgresql_query:
+    db: postgres
+    query: |
+      GRANT pg_monitor to "{{ monitor_user }}";
+
 - name: Create database user
   become_user: postgres
   community.postgresql.postgresql_user:

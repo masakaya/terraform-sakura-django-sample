@@ -56,20 +56,18 @@
 - 監視対象のデータベースサーバーが稼働していること
 - ODBCドライバーがインストールされていること
 
-### 2. アイテムの作成
-1. ホストの画面を開く
-2. データ収集 > ホスト > アイテムを選択する
-3. 「アイテムの作成」 をクリックする
-4. 以下の設定を行う:
-   - 名前: わかりやすい名前を付ける（Ex. Postgresql host）
-   - タイプ: データベースモニタ
-   - キー: `db.odbc.select[DB_ALIVE_TEST,TEST_PSQL]`と入れてください
-   - データ型: 数値
-   - ユーザー名: データベースへの接続ユーザー
-   - パスワード: データベースへの接続パスワード
-   - SQLクエリ: 実行したいSQLクエリを入力（`SELECT 1;`）
-   - 監視間隔：`1m`
-5. [追加] をクリックして保存
+1. データ収集 > ホスト > Zabbixサーバーを選択する
+2. ホストタブで以下の設定を行う
+   1. テンプレート > テンプレートグループ > `Template/Databases` を選択する
+   2. `PostgreSQL by ODBC`を選択する
+3. テンプレート：`PostgreSQL by ODBC`を選択し、「マクロ」タブから「継承したマクロとテンプレートマクロ」を選択し、以下の設定を行う。
+   1. マクロ：`{$PG.CONNSTRING.ODBC}` / 実効値：`Servername=192.168.0.200;Port=5432;Driver=/usr//lib/x86_64-linux-gnu/odbc/psqlodbcw.so`
+   2. マクロ：`{$PG.PASSWORD}` / 実行値： `zbx_monitor`ユーザのパスワード
+4. 「更新」ボタンをクリックする
+5. 監視データ >  最新データ にて「ホスト:`Zabbix server`」にて`DBStat`等の項目が表示されていることを確認する
+
+取得データは以下URLを参照のこと
+https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/db/postgresql_odbc
 
 ### 3. テストと確認
 1. 作成したアイテムの [テスト] ボタンをクリックする

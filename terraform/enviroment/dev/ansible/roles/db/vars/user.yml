@@ -3,6 +3,10 @@
 postgres_user: postgres
 postgres_password: testtest
 
+# Monitor user
+monitor_user: zbx_monitor
+monitor_password: zbx_monitor # vaultで暗号化
+
 # Database Users
 postgresql_users:
   - db: "app"
