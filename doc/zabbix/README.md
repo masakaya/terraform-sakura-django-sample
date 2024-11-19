@@ -173,23 +173,27 @@ see: https://manual.sakura.ad.jp/cloud/appliance/nfs/?_gl=1*go7p6m*_gcl_aw*R0NML
       - アイテム：「追加 > ホスト：NFS Disk Used」
    3. 「追加」ボタンにて追加する
 
-## 7. ログ監視
+## 7. ログ監視(アプリケーションログ)
 
 ### 前提条件:
 Zabbix監視サーバーにはsyslogサーバーにて各サーバーからログが収集されること
 
-例：
-  Webサーバー(Nginx) : server:{監視サーバー}:514 /var/log/rsyslog/nginx/access.log
+例：アプリケーションログ(/var/log/rsyslog/app/application.log)を監視する
 
 ### 手順（例）:
 
-#### 1. アイテムの作成(Nginxログの場合)
+#### 1. アイテムの作成
+
+ログファイルをZabbixへ取り込む
+
 1. 設定 > ホストに移動し、監視サーバー(Zabbix Server)を選択します。
 2. アイテム タブをクリックし、「アイテムの作成」をクリックします。
 3. 以下の設定を行います：
    - 名前: わかりやすい名前を付けます
    - タイプ: Zabbixエージェント(アクティブ)
-   - キー: logrt[/var/log/rsyslog/nginx/access.log,<条件>] (監視対象のログファイルパスを指定)
+   - キー: logrt[/var/log/rsyslog/app/application.log,,,,,,,,] (監視対象のログファイルパスを指定)
+   - 監視間隔：1m
+   - ログの時間の形式：`[yyyy-MM-dd hh:mm:ss]`
    - ※細かな設定は以下のURLを参照のこと
 https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/log_items
 
@@ -200,7 +204,7 @@ https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/lo
 2. 以下の設定を行います：
    - 名前: わかりやすい名前を付けます
    - 深刻度：状態に合わせること
-   - 式: `find(/Zabbix server/logrt["/var/log/rsyslog/nginx/access.log"],2m,"like",404)=1` 404が含まれていることを検知する
+   - 式: `find(/Zabbix server/logrt[/var/log/rsyslog/app/application.log,,,,,,,,],,,"error")<>0` ログに`error`が含まれていることを検知する
 3. 「追加」をクリックして保存します。
 
 ## 8. Slack通知

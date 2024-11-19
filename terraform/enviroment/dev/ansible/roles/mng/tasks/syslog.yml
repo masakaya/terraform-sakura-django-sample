@@ -14,7 +14,12 @@
     src: ./files/rsyslog.elb.conf
     dest: /etc/rsyslog.d/elb.conf
 
-- name: Configure rsyslog to listen on UDP and TCP ports
+- name: Configure rsyslog for application
+  ansible.builtin.copy:
+    src: ./files/rsyslog.app.conf
+    dest: /etc/rsyslog.d/app.conf
+
+- name: Configure rsyslog to listen on UDP ports
   lineinfile:
     path: /etc/rsyslog.conf
     line: "{{ item }}"
@@ -24,7 +29,7 @@
     - "input(type=\"imudp\" port=\"514\")"
   notify: Restart rsyslog
 
-- name: Configure logrotate for nginx
+- name: Configure logrotate
   ansible.builtin.copy:
     src: ./files/logrotate.conf
     dest: /etc/logrotate.d/rsyslog.mng
