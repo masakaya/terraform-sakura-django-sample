@@ -1,0 +1,66 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - build-essential 
+      - python3-venv 
+      - libssl-dev 
+      - libncurses-dev
+      - libreadline-dev
+      - tk-dev
+      - libbz2-dev
+      - liblzma-dev
+      - libffi-dev
+      - zlib1g-dev
+      - libsqlite3-dev
+    state: present
+
+- name: Check if /root/.pyenv directory exists
+  stat:
+    path: /root/.pyenv
+  register: pyenv_dir
+
+- name: Install pyenv
+  shell: |
+    curl https://pyenv.run | bash
+  args:
+    executable: /bin/bash
+  when: not pyenv_dir.stat.exists
+
+- name: Add pyenv to /etc/profile for all users
+  lineinfile:
+    path: /etc/profile
+    line: |
+      export PYENV_ROOT="/usr/local/pyenv"
+      export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init - --no-rehash --path)"
+    state: present
+
+- name: Install Python {{ PYTHON_VERSION }} using pyenv
+  shell: |
+    export PYENV_ROOT="/usr/local/pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init - --no-rehash --path)"
+    pyenv install {{ PYTHON_VERSION }}
+  args:
+    executable: /bin/bash
+  ignore_errors: true # 同一バージョンをインストールする時はエラーを無視する。
+
+- name: Set global Python version to {{ PYTHON_VERSION }}
+  shell: |
+    source /etc/profile
+    pyenv global {{ PYTHON_VERSION }}
+  args:
+    executable: /bin/bash
+
+- name: Install poetry
+  shell: |
+    curl -sSL https://install.python-poetry.org | python3 -
+  args:
+    executable: /bin/bash
+
+- name: Add poetry to /etc/profile for all users
+  lineinfile:
+    path: /etc/profile
+    line: 'export PATH="$HOME/.local/bin:$PATH"'
+    state: present
