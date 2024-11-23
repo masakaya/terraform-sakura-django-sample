@@ -69,15 +69,22 @@
   become: true
   vars_files:
     - vars/infrastructure.yml
-    - roles/db/vars/postgresql.yml
-    - roles/db/vars/root.yml
-    - roles/db/vars/user.yml
+    # - roles/db/vars/postgresql.yml
+    # - roles/db/vars/root.yml
+    # - roles/db/vars/user.yml
   hosts: db
   gather_facts: true
   tasks:
     - name: Database Setting
       ansible.builtin.import_role:
         name: db
+      vars:
+        postgres_user: "{{ database.application.admin_user }}"
+        postgres_password: "{{ database.application.admin_password }}"
+        monitor_user: "{{ database.application.monitor.user }}"
+        monitor_password: "{{ database.application.monitor.password }}"
+        zabbix_server: "{{ local_zabbix_agent_server }}"
+        zabbix_serveractive: "{{ local_zabbix_agent_serveractive }}"
   tags:
   - "db"
 

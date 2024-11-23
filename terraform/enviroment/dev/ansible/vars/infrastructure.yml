@@ -12,3 +12,24 @@ mount_point: "/data"
 # zabbix agent関連
 local_zabbix_agent_server: 192.168.0.254
 local_zabbix_agent_serveractive: 192.168.0.254
+
+# Zabbixにてデータベースをモニタリングするユーザ
+monitor_user: zbx_monitor
+monitor_password: zbx_monitor # vaultで暗号化
+monitor_server: 192.168.0.200
+
+# データベース関連
+database:
+  # アプリケーション用DB
+  application:
+    # アドミン
+    admin_user: "postgres"
+    admin_password: "testtest1" #vault
+    # 監視用ユーザ
+    monitor:
+      user: "zbx_monitor"
+      password: "zbx_monitor1" #vault
+  # 管理サーバー用DB
+  management:
+    admin_user: "postgres"
+    admin_password: "testtest2" #vault

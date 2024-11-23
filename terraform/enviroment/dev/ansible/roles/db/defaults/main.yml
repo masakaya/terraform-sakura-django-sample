@@ -1,0 +1,23 @@
+---
+postgresql_version: "16"
+postgresql_port: "5432"
+
+# Admin password
+postgres_user: postgres
+postgres_password: testtest
+
+# Monitor user
+monitor_user: zbx_monitor
+monitor_password: zbx_monitor
+
+# zabbix agent関連
+zabbix_server: 192.168.0.254
+zabbix_serveractive: 192.168.0.254
+
+# User設定。以下の項目を設定すること
+# - db: "app"
+#   name: "admin"
+#   password: "password1" # あとでvaultで暗号化する
+#   port: 5432
+#   default_schema: "app"
+postgresql_users: []
