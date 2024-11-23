@@ -36,12 +36,14 @@
     - vars/infrastructure.yml
   hosts: web
   gather_facts: true
-
   tasks:
     # Web Serverのセッティング
     - name: Webserver Setting
       ansible.builtin.import_role:
         name: web
+    - name: NFS Setting
+      ansible.builtin.import_role:
+        name: nfs 
   tags: 
   - "web"
 
@@ -57,6 +59,9 @@
     - name: Batch server Setting
       ansible.builtin.import_role:
         name: batch
+    - name: NFS Setting
+      ansible.builtin.import_role:
+        name: nfs 
   tags: 
   - "batch"
 

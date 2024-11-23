@@ -18,7 +18,3 @@
 
 - name: Setup application base
   ansible.builtin.include_tasks: application.yml
-
-- name: Setup NFS
-  ansible.builtin.include_tasks: nfs.yml
-  
