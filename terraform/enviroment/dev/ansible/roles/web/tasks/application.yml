@@ -15,45 +15,69 @@
       - libsqlite3-dev
     state: present
 
-- name: Check if /root/.pyenv directory exists
+- name: Get install userinfo
+  user:
+    name: "{{ default_user_name }}"
+    state: present
+  register: userinfo
+
+- name: Check if $HOME/.pyenv directory exists
+  become_user: zebra
   stat:
-    path: /root/.pyenv
+    path: "{{ userinfo.home }}/.pyenv"
   register: pyenv_dir
 
 - name: Install pyenv
+  become_user: zebra 
   shell: |
     curl https://pyenv.run | bash
   args:
     executable: /bin/bash
   when: not pyenv_dir.stat.exists
 
-- name: Add pyenv to /etc/profile for all users
+- name: Add pyenv to .profile for zebra users
+  become_user: zebra 
   lineinfile:
-    path: /etc/profile
+    path: "{{userinfo.home}}/.profile" 
     line: |
-      export PYENV_ROOT="/usr/local/pyenv"
+      export PYENV_ROOT="{{ userinfo.home }}/.pyenv"
       export PATH="$PYENV_ROOT/bin:$PATH"
-      eval "$(pyenv init - --no-rehash --path)"
+      eval "$(pyenv init -)"
     state: present
+  when: not pyenv_dir.stat.exists
+
+- name: Check if Python version is installed
+  become_user: zebra 
+  command: bash -lc "pyenv versions --bare | grep {{ PYTHON_VERSION }}"
+  register: python_version_check
+  ignore_errors: true # バージョンが見つからない場合のエラーを無視
+
+- name: Set fact if Python version is installed
+  set_fact:
+    python_version_installed: "{{ python_version_check.rc == 0 }}"
+
+- name: Print result
+  debug:
+    msg: "Python {{ PYTHON_VERSION }} is installed: {{ python_version_installed }}"
 
 - name: Install Python {{ PYTHON_VERSION }} using pyenv
+  become_user: zebra 
   shell: |
-    export PYENV_ROOT="/usr/local/pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init - --no-rehash --path)"
-    pyenv install {{ PYTHON_VERSION }}
+    bash -lc "pyenv install {{ PYTHON_VERSION }}"
   args:
     executable: /bin/bash
-  ignore_errors: true # 同一バージョンをインストールする時はエラーを無視する。
+  when: not python_version_installed
 
 - name: Set global Python version to {{ PYTHON_VERSION }}
+  become_user: zebra 
   shell: |
-    source /etc/profile
-    pyenv global {{ PYTHON_VERSION }}
+    bash -lc "pyenv global {{ PYTHON_VERSION }}"
   args:
     executable: /bin/bash
+  when: not python_version_installed
 
 - name: Install poetry
+  become_user: zebra 
   shell: |
     curl -sSL https://install.python-poetry.org | python3 -
   args:
@@ -61,6 +85,6 @@
 
 - name: Add poetry to /etc/profile for all users
   lineinfile:
-    path: /etc/profile
-    line: 'export PATH="$HOME/.local/bin:$PATH"'
-    state: present
+     path: "{{userinfo.home}}/.profile" 
+     line: 'export PATH="$HOME/.local/bin:$PATH"'
+     state: present

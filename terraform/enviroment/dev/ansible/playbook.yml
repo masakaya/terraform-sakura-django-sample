@@ -2,25 +2,38 @@
 - name: Update apt package
   become: true
   hosts: all
-  vars_files:
-    - vars/common.yml
   gather_facts: false
-
   tasks:
     # 共通処理
     - name: Common settings
       ansible.builtin.import_role:
         name: common
-  vars:
-    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
+
+- name: Create work user
+  become: true
+  hosts: web, batch
+  vars_files:
+    - vars/application.yml
+  tasks:
+    - name : Create work user group
+      ansible.builtin.group:
+        name: "{{ default_user_group }}" 
+        state: present
+
+    - name : Create work user 
+      ansible.builtin.user:
+        name: "{{ default_user_name }}" 
+        group: "{{ default_user_group }}" 
+        password: "{{ default_user_password | password_hash('sha512') }}"
+        groups: sudo
+        shell: "/bin/bash"
+        append: true
 
 - name: Deploy web system
   become: true
   vars_files:
-    - vars/nfs.yml
-    - vars/common.yml
-    - vars/zabbix.yml
-    - vars/lb.yml
+    - vars/application.yml
+    - vars/infrastructure.yml
   hosts: web
   gather_facts: true
 
@@ -31,15 +44,12 @@
         name: web
   tags: 
   - "web"
-  vars:
-    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 
 - name: Deploy batch system
   become: true
   vars_files:
-    - vars/nfs.yml
-    - vars/common.yml
-    - vars/zabbix.yml
+    - vars/application.yml
+    - vars/infrastructure.yml
   hosts: batch
   gather_facts: true
   tasks:
@@ -49,14 +59,11 @@
         name: batch
   tags: 
   - "batch"
-  vars:
-    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 
 - name: Setting database server
   become: true
   vars_files:
-    - vars/common.yml
-    - vars/zabbix.yml
+    - vars/infrastructure.yml
     - roles/db/vars/postgresql.yml
     - roles/db/vars/root.yml
     - roles/db/vars/user.yml
@@ -68,15 +75,11 @@
         name: db
   tags:
   - "db"
-  vars:
-    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
 
 - name: Setup management server
   become: true
   vars_files:
-    - vars/nfs.yml
-    - vars/common.yml
-    - vars/lb.yml
+    - vars/infrastructure.yml
   hosts: mng 
   gather_facts: true
   tasks:
@@ -85,6 +88,3 @@
         name: mng
   tags: 
   - "mng"
-  vars:
-    ansible_ssh_private_key_file: "{{ ssh_key_path }}"
-    ansible_os_family: "Ubuntu"

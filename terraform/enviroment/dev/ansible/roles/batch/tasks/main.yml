@@ -1,7 +1,8 @@
 ---
 - name: Install package
   ansible.builtin.apt:
-    name: 
+    name:
+    - curl 
     - git
     state: present
 
@@ -20,3 +21,4 @@
 
 - name: Setup NFS
   ansible.builtin.include_tasks: nfs.yml
+  
