@@ -1,0 +1,7 @@
+# python version
+PYTHON_VERSION: 3.11.8
+
+# アプリケーションユーザ
+default_user_name: "zebra"
+default_user_group: "zebra"
+default_user_password: "zebrasousai"
