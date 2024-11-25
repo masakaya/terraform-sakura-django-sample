@@ -69,9 +69,6 @@
   become: true
   vars_files:
     - vars/infrastructure.yml
-    # - roles/db/vars/postgresql.yml
-    # - roles/db/vars/root.yml
-    # - roles/db/vars/user.yml
   hosts: db
   gather_facts: true
   tasks:
