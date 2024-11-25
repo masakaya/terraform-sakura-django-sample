@@ -40,7 +40,7 @@ variable "service" {
 variable "env" {
   type        = string
   description = "環境名"
-  default     = "dev"
+  default     = "prod"
 }
 
 variable "lb_region" {
