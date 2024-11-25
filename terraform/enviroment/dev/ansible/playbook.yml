@@ -98,5 +98,17 @@
     - name: Database Setting
       ansible.builtin.import_role:
         name: mng
+      vars:
+        zabbix_database_admin_username: "{{ database.management.admin_user }}"
+        zabbix_database_admin_password: "{{ database.management.admin_password }}"
+        zabbix_database_host: "{{ database.management.zabbix.host }}"
+        zabbix_database_name: "{{ database.management.zabbix.name }}"
+        zabbix_database_username: "{{ database.management.zabbix.username }}"
+        zabbix_database_password: "{{ database.management.zabbix.password }}"
+        zabbix_database_schema: "{{ database.management.zabbix.schema }}"
+        monitor_database_name: "{{ database.application.monitor.name }}"
+        monitor_database_user: "{{ database.application.monitor.user }}"
+        monitor_database_password: "{{ database.application.monitor.password }}"
+        monitor_database_server: "{{ database.application.monitor.host }}"
   tags: 
   - "mng"

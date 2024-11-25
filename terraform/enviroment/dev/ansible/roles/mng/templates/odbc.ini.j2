@@ -1,11 +1,11 @@
 [MONITOR_PSQL]
-Description=PostgreSQL Test Database
+Description=Monitoring Database
 Driver=postgresql
-Username={{ application.database_user }}
-Password={{ application.database_password }}
-Servername={{ application.database_server }}
-Database={{ application.database_name }}
-Port={{ application.database_port }}
+Username={{ monitor_database_user }}
+Password={{ monitor_database_password }}
+Servername={{ monitor_database_server }}
+Database={{ monitor_database_name }}
+Port={{ monitor_database_port }}
 ReadOnly=No
 Protocol=7.4+
 ShowOidColumn=No

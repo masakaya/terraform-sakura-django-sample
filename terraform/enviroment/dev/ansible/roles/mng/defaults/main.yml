@@ -1,0 +1,20 @@
+---
+postgresql_version: "16"
+postgresql_port: "5432"
+
+# zabbix用のデータベース情報
+zabbix_database_admin_username: "postgres"
+zabbix_database_admin_password: "password"
+zabbix_database_name: "zabbix"
+zabbix_database_username: "zabbix"
+zabbix_database_password: "password"
+zabbix_database_schema: "zabbix"
+zabbix_database_host: "localhost"
+
+
+# 監視対象のデータベース情報
+monitor_database_name: "postgres"
+monitor_database_user: "zbx_monitor"
+monitor_database_password: "zbx_monitor"
+monitor_database_server: "192.168.0.200"
+monitor_database_port: "5432"

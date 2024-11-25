@@ -3,7 +3,7 @@
   ansible.builtin.lineinfile:
     path: "{{ zabbix_conf_path }}"
     regexp: "^DBHost=localhost"
-    line: "DBHost={{ zabbix_server_config.db_host }}"
+    line: "DBHost={{ zabbix_database_host }}"
     backup: true
     state: present
 
@@ -11,7 +11,7 @@
   ansible.builtin.lineinfile:
     path: "{{ zabbix_conf_path }}"
     regexp: "^DBSchema="
-    line: "DBSchema={{ zabbix_server_config.db_schema }}"
+    line: "DBSchema={{ zabbix_database_schema }}"
     backup: true
     state: present
 
@@ -19,7 +19,7 @@
   ansible.builtin.lineinfile:
     path: "{{ zabbix_conf_path }}"
     regexp: "^DBName="
-    line: "DBName={{ zabbix_server_config.db_name }}"
+    line: "DBName={{ zabbix_database_name }}"
     backup: true
     state: present
 
@@ -27,7 +27,7 @@
   ansible.builtin.lineinfile:
     path: "{{ zabbix_conf_path }}"
     regexp: "^DBUser="
-    line: "DBUser={{ zabbix_server_config.db_user }}"
+    line: "DBUser={{ zabbix_database_username }}"
     backup: true
     state: present
 
@@ -35,7 +35,7 @@
   ansible.builtin.lineinfile:
     path: "{{ zabbix_conf_path }}"
     regexp: "^DBPassword="
-    line: "DBPassword={{ zabbix_server_config.db_password }}"
+    line: "DBPassword={{ zabbix_database_password }}"
     backup: true
     state: present
 
@@ -43,7 +43,7 @@
   ansible.builtin.lineinfile:
     path: "{{ zabbix_conf_path }}"
     regexp: "^DBPort="
-    line: "DBPort={{ zabbix_server_config.db_port }}"
+    line: "DBPort={{ postgresql_port }}"
     backup: true
     state: present
     

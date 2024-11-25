@@ -2,14 +2,14 @@
 // Zabbix GUI configuration file.
 
 $DB['TYPE']                     = 'POSTGRESQL';
-$DB['SERVER']                   = '{{ zabbix_server_config.db_host }}';
+$DB['SERVER']                   = '{{ zabbix_database_host }}';
 $DB['PORT']                     = '0';
-$DB['DATABASE']                 = '{{ zabbix_server_config.db_name }}';
-$DB['USER']                     = '{{ zabbix_server_config.db_user }}';
-$DB['PASSWORD']                 = '{{ zabbix_server_config.db_password }}';
+$DB['DATABASE']                 = '{{ zabbix_database_name }}';
+$DB['USER']                     = '{{ zabbix_database_username }}';
+$DB['PASSWORD']                 = '{{ zabbix_database_password }}';
 
 // Schema name. Used for PostgreSQL.
-$DB['SCHEMA']                   = '{{ zabbix_server_config.db_schema }}';
+$DB['SCHEMA']                   = '{{ zabbix_database_schema }}';
 
 // Used for TLS connection.
 $DB['ENCRYPTION']               = true;
