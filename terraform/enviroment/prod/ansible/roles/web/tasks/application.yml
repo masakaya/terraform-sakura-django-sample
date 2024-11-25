@@ -83,7 +83,7 @@
   args:
     executable: /bin/bash
 
-- name: Add poetry to /etc/profile for all users
+- name: Add poetry to $HOME/.profile
   lineinfile:
      path: "{{userinfo.home}}/.profile" 
      line: 'export PATH="$HOME/.local/bin:$PATH"'
