@@ -3,8 +3,6 @@
   include_vars:
     dir: ../vars
     files_matching:
-    - odbc.yml
-    - zabbix_database.yml
     - zabbix_server.yml
 
 - name: Install zabbix package

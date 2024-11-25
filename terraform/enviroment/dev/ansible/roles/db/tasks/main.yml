@@ -36,27 +36,10 @@
     state: present
   notify: Restart PostgreSQL
 
-# デバッグ用後で削除する
-- name: Update pg_hba(debug)
-  community.postgresql.postgresql_pg_hba:
-    dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
-    contype: host
-    source: 106.172.6.226/32
-    method: md5
-    state: present
-  notify: Restart PostgreSQL
-
 - name: Change postgres root password
   user:
     name: "{{ postgres_user }}"
     password: "{{ postgres_password | password_hash('sha256')}}"
-
-- name: Create application database
-  become_user: postgres
-  community.postgresql.postgresql_db:
-    name: app
-    port: "{{ postgresql_port }}"
-    state: present
 
 - name: Create monitoring user
   become_user: postgres
@@ -111,7 +94,7 @@
     name: community.zabbix.zabbix_agent
   vars:
     zabbix_agent_hostname: "Database Server"
-    zabbix_agent_server: "{{ local_zabbix_agent_server }}"
-    zabbix_agent_serveractive: "{{ local_zabbix_agent_serveractive }}"
+    zabbix_agent_server: "{{ zabbix_server }}"
+    zabbix_agent_serveractive: "{{ zabbix_serveractive }}"
     zabbix_agent_hostmetadata: "system.uname"
     zabbix_agent_hostmetadataitem: "Database"

@@ -4,7 +4,7 @@ resource "sakuracloud_proxylb" "main" {
   vip_failover   = true  # default: false
   sticky_session = false # ラウンドロビンで動作させるため、sessionによる経路固定は指定
   gzip           = true  # 圧縮
-  proxy_protocol = true  # HTTP/2を有効にする
+  proxy_protocol = true
   region         = var.lb_region
 
   health_check {

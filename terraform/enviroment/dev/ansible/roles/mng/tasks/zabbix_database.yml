@@ -16,38 +16,36 @@
 
 - name: Change postgres root password
   user:
-    name: "{{ postgres_user }}"
-    password: "{{ postgres_password | password_hash('sha256')}}"
+    name: "{{ zabbix_database_admin_username }}"
+    password: "{{ zabbix_database_admin_password | password_hash('sha256')}}"
 
 - name: Create zabbix database
   become_user: postgres
   community.postgresql.postgresql_db:
-    name: zabbix
+    name: "{{ zabbix_database_name }}"
     port: "{{ postgresql_port }}"
     state: present
 
 - name: Create database user
   become_user: postgres
   community.postgresql.postgresql_user:
-    db: "{{ item.db }}"
-    name: "{{ item.name }}"
-    password: "{{ item.password }}"
+    db: "{{ zabbix_database_name }}"
+    name: "{{ zabbix_database_username }}"
+    password: "{{ zabbix_database_password }}"
     role_attr_flags: NOSUPERUSER,NOCREATEDB,NOCREATEROLE
     port: "{{ postgresql_port }}"
     encrypted: yes
     state: present
-  with_items: "{{ zabbix_users }}"
 
 # ユーザ毎にスキーマを作成する
 - name: Create zabbix schema
   become_user: postgres
   community.postgresql.postgresql_schema:
-    name: "{{ item.default_schema }}"
-    database: "{{ item.db }}"
-    owner: "{{ item.name }}"
+    name: "{{ zabbix_database_schema }}"
+    database: "{{ zabbix_database_name }}"
+    owner: "{{ zabbix_database_username }}"
     port: "{{ postgresql_port }}"
     state: present
-  with_items: "{{ zabbix_users }}"
 
 # デフォルトスキーマ変更
 - name: Set default search_path
@@ -56,16 +54,15 @@
     db: postgres
     port: "{{ postgresql_port }}"
     query: |
-      ALTER USER {{ item.name }} SET search_path TO {{ item.default_schema }}, public;
-  with_items: "{{ zabbix_users }}"
+      ALTER USER {{ zabbix_database_username }} SET search_path TO {{ zabbix_database_schema }}, public;
 
 # 初期化用DBを登録
 - name: configure / initialize database
   community.postgresql.postgresql_db:
-    name: "{{ zabbix_server_config.db_name }}"
-    login_host: "{{ zabbix_server_config.db_host  }}"
-    login_password: "{{ zabbix_server_config.db_password }}"
-    login_user: "{{ zabbix_server_config.db_user }}"
-    port: "{{ zabbix_server_config.db_port }}"
+    name: "{{ zabbix_database_name }}"
+    login_host: "{{ zabbix_database_host }}"
+    login_user: "{{ zabbix_database_username }}"
+    login_password: "{{ zabbix_database_password }}"
+    port: "{{ postgresql_port }}"
     state: "restore"
     target: "/usr/share/zabbix-sql-scripts/postgresql/server.sql.gz"
